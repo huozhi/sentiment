@@ -49,6 +49,8 @@ def register(req):
 
 @csrf_exempt
 def login(req):
+    if req.method == 'GET':
+        return index(req)
     name, pwd = parse_query(req)
     try:
         user = User.objects.get(name=name, pwd=pwd)
@@ -66,7 +68,7 @@ def user_mood(req):
     seconds = json.loads('date')
     fts = datetime.datetime.fromtimestamp
     curdate = fts(seconds)
-    postlist = Post.objects.filter(date__gt=curdate)order_by('date')[0:50]
+    postlist = Post.objects.filter(date__gt=curdate).order_by('date')[0:50]
     return HttpResponse(jsonf(postlist))        
 
 

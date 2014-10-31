@@ -3,10 +3,11 @@ from mongoengine import *
 
 # Create your models here.
 
-class User(Document):
-    name = StringField(max_length=20,required=True)
-    pwd = StringField(max_length=20,required=True)
-    posts = ListField(EmbeddedDocumentField(MoodPost), default=None)
+
+class Comment(EmbeddedDocument):
+    author = StringField(max_length=20)
+    img = StringField()
+
 
 
 class Post(EmbeddedDocument):
@@ -19,7 +20,10 @@ class Post(EmbeddedDocument):
     comments = ListField(EmbeddedDocumentField(Comment))
 
 
-class Comment(EmbeddedDocument):
-    author = StringField(max_length=20)
-    img = StringField()
+
+class User(Document):
+    name = StringField(max_length=20,required=True)
+    pwd = StringField(max_length=20,required=True)
+    posts = ListField(EmbeddedDocumentField(Post), default=None)
+
 
