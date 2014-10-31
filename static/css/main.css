@@ -1,0 +1,31 @@
+* {
+font-family: "Open Sans", "HelveticaNeue-Light Light", Arial, Helvetica, "Lucida Grande", "Microsoft Yahei";
+}
+.navbar {
+    margin-bottom: 0px;
+}
+
+.post {
+    position: relative;
+    margin-bottom: 40px;
+    padding-left: 0px;
+    padding-right: 0px;
+
+}
+
+.post-img, .post-text {
+    padding-left: 0px;
+    padding-right: 0px;
+    display: inline-block;
+}
+
+.post-img {
+}
+
+.post-text {
+}
+
+.post-img > img {
+    position: relative;
+    /*height: 100%;*/
+}
