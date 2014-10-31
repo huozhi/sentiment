@@ -67,8 +67,8 @@ DATABASES = {
     },
 }
 
-_MONGODB_USER = ''
-_MONGODB_PASSWD = ''
+_MONGODB_USER = 'root'
+_MONGODB_PASSWD = 'root'
 _MONGODB_HOST = 'localhost'
 _MONGODB_NAME = 'sentiment'
 _MONGODB_PORT = 27017
