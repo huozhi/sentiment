@@ -57,8 +57,8 @@ def login(req):
 def user_mood(req):
     # pass
     # posts = None
-    # posts = Post.objects.all()[0:8]
-    return render(req, 'home.html')
+    posts = list(Post.objects.all())
+    return render(req, 'home.html', locals())
 
 
 
@@ -71,18 +71,22 @@ def post_mood(req):
         # user = None
         try:
             user = User.objects.get(name='a')
-            print 'get', user
+            # print 'get', user
         except:
             user = User(name='a')
             # user.save()
-            print user
+            # print user
             # return HttpResponse(1)
-        print user.name,user.pwd
+        # print user.name,user.pwd
         # user.save()
-        post = Post(img=imgurl,text=text,imood=imood,poster=user)
+        tmood = SnowNLP(text).sentiments
+        post = Post(img=imgurl,text=text,tmood=tmood,imood=imood,poster=user)
         # print post.img,post.text,post.imood,post.poster
         post.save()
-        return HttpResponse(0)
+        # return HttpResponse(0)
+        posts = list(Post.objects.all())
+        print 'posts',len(posts)
+        return render(req, 'home.html', posts)
     return HttpResponse(1)
 
 

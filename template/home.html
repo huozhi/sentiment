@@ -50,7 +50,7 @@
                         majorindex = i;
                 }
 
-                for(var i = 0;i < 4; i++) {
+                for(var i = 0; i < 4; i++) {
                     if(i != majorindex)
                         $('#' + er[i].emotion).addClass('hide');
                 }
@@ -62,7 +62,7 @@
                 }
                 $.post('/post/', postMood, function(ret) {
                     console.log(ret);
-                    // location.reload();
+                    location.reload();
                 })
             });
 
@@ -207,21 +207,65 @@
 
 
     <div class="container-fluid">
+        {% for post in posts %}
         <div class="post col-lg-12">
             <div class="post-img col-lg-8">
-                <img class="col-lg-12" src="{{STATIC_URL}}img/slide-1.jpg" alt="">
+                <img class="col-lg-12" src="{{ post.img }}" alt="">
             </div>
             <div class="post-text col-lg-4 text-center">
-                <h3>感觉hackathon要写不完了啊...</h3>
-                <h3>
-                    <small>October 13, 2013</small>
-                </h3>
+                <h3>{{ post.text }}</h3>
+                <h4>你那天有点
+                {% ifequal post.imood 'happy' %}
+                    <span class="label label-success">
+                    开心
+                {% endifequal %}
+                {% ifequal post.imood 'sad' %}
+                    <span class="label label-primary">
+                    伤心
+                {% endifequal %}
+                {% ifequal post.imood 'angry' %}
+                    <span class="label label-danger">
+                    不爽
+                {% endifequal %}
+                {% ifequal post.imood 'surprise' %}
+                    <span class="label label-warning">
+                    惊讶
+                {% endifequal %}
+                </span>呀</h4>
                 <!-- <a href="#" class="btn btn-default btn-lg">Read More</a> -->
             </div>
             <hr>
         </div>
+        {% endfor %}
+
+        <div class="col-lg-12 text-center">
+            <ul class="pager">
+                <!-- <li class="previous"><a href="/logout">&larr; Older</a> -->
+                <!-- </li> -->
+                <li class="next"><a href="/axis">看看心情轴</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <p>Copyright &copy; Your Website 2014</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+{% include 'footer.html' %}
+
+
+</body>
+</html>
         
-        <div class="post col-lg-12">
+<!--         <div class="post col-lg-12">
             <div class="post-img col-lg-8">
                 <img class="col-lg-12" src="{{STATIC_URL}}img/slide-2.jpg" alt="">
             </div>
@@ -316,33 +360,5 @@
                 </h3>
             </div>
             <hr>
-        </div>
+        </div> -->
 
-
-        <div class="col-lg-12 text-center">
-            <ul class="pager">
-                <li class="previous"><a href="#">&larr; Older</a>
-                </li>
-                <li class="next"><a href="#">Newer &rarr;</a>
-                </li>
-            </ul>
-        </div>
-
-    </div>
-
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <p>Copyright &copy; Your Website 2014</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-{% include 'footer.html' %}
-
-
-</body>
-
-</html>

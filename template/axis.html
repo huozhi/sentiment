@@ -4,83 +4,101 @@
 
 
 <body>
+
+<div class="jumbotron">
+    <div class="container">
+        <h1>心情轴<h2><small>波浪起伏，看看你最近的心情状况...</small></h2></h1>
+    </div>
+</div>
+
 <div class="text-center block-center conatiner">
     <canvas id="myChart" width="800" height="400"></canvas>
 </div>
 <!-- <br> -->
 <div class="conatiner text-center block-center">
     <div class="row col-lg-offset-2 col-lg-12">
-      
-      <div class="col-lg-1">
-        <div class="thumbnail">
-          <img src="/static/img/slide-1.jpg" width="200" height="200" alt="...">
-          <div class="caption">
-            <p>感觉hackathon要写不完了啊...</p>
-          </div>
+        <div class="col-lg-1" data-toggle="tooltip" data-placement="bottom">
+            <div class="thumbnail">
+                <img src="/static/img/slide-2.jpg" width="200" height="200" alt="...">
+                <button type="button" class="btn btn-default sr-only" data-toggle="tooltip"
+                data-placement="bottom"
+                title="感觉hackathon要写不完了啊..."></button>
+            </div>
         </div>
-      </div>
-
-      <div class="col-lg-1">
-        <div class="thumbnail">
-          <img src="/static/img/slide-2.jpg" width="200" height="200" alt="...">
-          <div class="caption">
-            <p>感觉hackathon要写不完了啊...</p>
-          </div>
+        
+        <div class="col-lg-1" data-toggle="tooltip" data-placement="bottom">
+            <div class="thumbnail">
+                <img src="/static/img/slide-2.jpg" width="200" height="200" alt="...">
+                <button type="button" class="btn btn-default sr-only" data-toggle="tooltip"
+                data-placement="bottom"
+                title="感觉hackathon要写不完了啊..."></button>
+            </div>
         </div>
-      </div>
-
-      <div class="col-lg-1">
-        <div class="thumbnail">
-          <img src="/static/img/slide-3.jpg" width="200" height="200" alt="...">
-          <div class="caption">
-            <p>感觉hackathon要写不完了啊...</p>
-          </div>
+        
+        <div class="col-lg-1" data-toggle="tooltip" data-placement="bottom">
+            <div class="thumbnail">
+                <img src="/static/img/slide-2.jpg" width="200" height="200" alt="...">
+                <button type="button" class="btn btn-default sr-only" data-toggle="tooltip"
+                data-placement="bottom"
+                title="感觉hackathon要写不完了啊..."></button>
+            </div>
         </div>
-      </div>
 
-      <div class="col-lg-1">
-        <div class="thumbnail">
-          <img src="/static/img/slide-4.jpg" width="200" height="200" alt="...">
-          <div class="caption">
-            <p>感觉hackathon要写不完了啊...</p>
-          </div>
+        <div class="col-lg-1" data-toggle="tooltip" data-placement="bottom">
+            <div class="thumbnail">
+                <img src="/static/img/slide-2.jpg" width="200" height="200" alt="...">
+                <button type="button" class="btn btn-default sr-only" data-toggle="tooltip"
+                data-placement="bottom"
+                title="感觉hackathon要写不完了啊..."></button>
+            </div>
         </div>
-      </div>
 
-      <div class="col-lg-1">
-        <div class="thumbnail">
-          <img src="/static/img/slide-5.jpg" width="200" height="200" alt="...">
-          <div class="caption">
-            <p>感觉hackathon要写不完了啊...</p>
-          </div>
+        <div class="col-lg-1" data-toggle="tooltip" data-placement="bottom">
+            <div class="thumbnail">
+                <img src="/static/img/slide-2.jpg" width="200" height="200" alt="...">
+                <button type="button" class="btn btn-default sr-only" data-toggle="tooltip"
+                data-placement="bottom"
+                title="感觉hackathon要写不完了啊..."></button>
+            </div>
         </div>
-      </div>
 
-      <div class="col-lg-1">
-        <div class="thumbnail">
-          <img src="/static/img/slide-6.jpg" width="200" height="200" alt="...">
-          <div class="caption">
-            <p>感觉hackathon要写不完了啊...</p>
-          </div>
+
+        <div class="col-lg-1" data-toggle="tooltip" data-placement="bottom">
+            <div class="thumbnail">
+                <img src="/static/img/slide-2.jpg" width="200" height="200" alt="...">
+                <button type="button" class="btn btn-default sr-only" data-toggle="tooltip"
+                data-placement="bottom"
+                title="感觉hackathon要写不完了啊..."></button>
+            </div>
         </div>
-      </div>
 
-      <div class="col-lg-1">
-        <div class="thumbnail">
-          <img src="/static/img/slide-7.jpg" width="200" height="200" alt="...">
-          <div class="caption">
-            <p>感觉hackathon要写不完了啊...</p>
-          </div>
+        <div class="col-lg-1" data-toggle="tooltip" data-placement="bottom">
+            <div class="thumbnail">
+                <img src="/static/img/slide-2.jpg" width="200" height="200" alt="...">
+                <button type="button" class="btn btn-default sr-only" data-toggle="tooltip"
+                data-placement="bottom"
+                title="感觉hackathon要写不完了啊..."></button>
+            </div>
         </div>
-      </div>
-
 
     </div>
-    
 </div>
+
+<div class="col-lg-12 text-center">
+    <ul class="pager">
+        <li class="previous"><a href="#">上个月的心情记录</a></li>
+        <li class="next"><a href="#">下个月的心情记录</a></li>
+    </ul>
+</div>
+
 {% include 'footer.html' %}
 <script type="text/javascript" src="/static/js/Chart.min.js"></script>
 <script type="text/javascript">
+$(document).ready(function() {
+
+    $('img').next().attr('感觉hackathon要写不完了啊...')
+    $('button').tooltip('show')
+})
 var data = {
     labels : ["day1","day2","day3","day4","day5","day6","day7"],
     datasets : [
