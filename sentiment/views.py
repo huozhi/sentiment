@@ -42,43 +42,24 @@ def login(req):
         # name, pwd = parse_query(req)
     if req.method == 'POST':
         uname = req.POST.get('name','')
-        # print 'session',q.name
+        
         return render(req, 'home.html', {'name': uname})
     return render(req, 'index.html')
-        # req.session['name'] = q.get('name')
-        # return HttpResponse('0')
-        
-        #     print name,pwd
-        #     data = { 'state' : 0 }
-        #     # try:
-        #     user = User.objects.get(name=name, pwd=pwd)
-        #     # req.session['name'] = user.name
-        #     print data
-        #     return HttpResponse(0)
-        # else:
-        #     return index(req)
-        # except User.DoesNotExist:
-            # data['state'] = 1
-            # return HttpResponse(data)
 
 
 def user_mood(req):
-    # name = req.session.get('name',None)
-    # print 'session',name
-    # if name is None:
-        # return index(req)
-    # req.session['name'] = 'q'
-    return render(req, 'home.html')
-    query = json.loads(req.body)
-    seconds = json.loads('date')
-    fts = datetime.datetime.fromtimestamp
-    curdate = fts(seconds)
-    postlist = Post.objects.filter(date__gt=curdate).order_by('date')[0:50]
-    return HttpResponse(postlist)
+    posts = None
+    # posts = Post.objects.all()[0:8]
+    return render(req, 'home.html', {'posts':posts})
+
 
 
 def post_mood(req):
-    query = json.loads(query)
-    post_imgurl = query.get('img')
-    post_text = query.get('text')
-    post = Post(img=post_imgurl)
+    if req.method == 'POST':
+        f = req.FILES.get['']
+
+
+
+
+def axis(req):
+    return render(req, 'axis.html', locals())

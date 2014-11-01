@@ -72,7 +72,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sentiment',
         'USER': 'root',
-        'PASSWORD': 'huozhi',
+        'PASSWORD': 'root',
         'HOST': 'localhost',
         'PORT': 3306
     }
@@ -122,4 +122,8 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     'static',
+    'media',
 )
+
+MEDIA_ROOT = 'media'
+MEDIA_URL = '/media/'
