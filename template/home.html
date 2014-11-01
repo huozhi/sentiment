@@ -61,7 +61,7 @@
                     emotion: er[majorindex].emotion
                 }
                 $.post('/post/', postMood, function(ret) {
-                    console.log(ret);
+                    // console.log(ret);
                     location.reload();
                 })
             });
@@ -201,8 +201,9 @@
 <div class="jumbotron">
     <div class="container">
         <h1>心情轴</h1><p>留下你的脚印，回顾心路历程...</p>
+        {% include 'post.html' %}
+        <a href="/axis/" class="btn btn-default">查看心情轴</a>
     </div>
-    {% include 'post.html' %}
 </div>
 
 
@@ -238,14 +239,12 @@
         </div>
         {% endfor %}
 
-        <div class="col-lg-12 text-center">
+        <!-- <div class="col-lg-12 text-center">
             <ul class="pager">
-                <!-- <li class="previous"><a href="/logout">&larr; Older</a> -->
-                <!-- </li> -->
-                <li class="next"><a href="/axis">看看心情轴</a>
-                </li>
+                <li class="previous"><a href="/logout">&larr; Older</a></li>
+                <li class="next"><a href="/axis">看看心情轴</a></li>
             </ul>
-        </div>
+        </div> -->
 
     </div>
 
@@ -264,101 +263,3 @@
 
 </body>
 </html>
-        
-<!--         <div class="post col-lg-12">
-            <div class="post-img col-lg-8">
-                <img class="col-lg-12" src="{{STATIC_URL}}img/slide-2.jpg" alt="">
-            </div>
-            <div class="post-text col-lg-4 text-center">
-                <h3>感觉hackathon要写不完了啊...</h3>
-                <h3>
-                    <small>October 13, 2014</small>
-                </h3>
-            </div>
-            <hr>
-        </div>
-
-        <div class="post col-lg-12">
-            <div class="post-img col-lg-8">
-                <img class="col-lg-12" src="{{STATIC_URL}}img/slide-3.jpg" alt="">
-            </div>
-            <div class="post-text col-lg-4 text-center">
-                <h3>感觉hackathon要写不完了啊...</h3>
-                <h3>
-                    
-                    <small>October 13, 2015</small>
-                </h3>
-            </div>
-            <hr>
-        </div>
-
-        <div class="post col-lg-12">
-            <div class="post-img col-lg-8">
-                <img class="col-lg-12" src="{{STATIC_URL}}img/slide-4.jpg" alt="">
-            </div>
-            <div class="post-text col-lg-4 text-center">
-                <h3>感觉hackathon要写不完了啊...</h3>
-                <h3>
-                    
-                    <small>October 13, 2015</small>
-                </h3>
-            </div>
-            <hr>
-        </div>
-
-        <div class="post col-lg-12">
-            <div class="post-img col-lg-8">
-                <img class="col-lg-12" src="{{STATIC_URL}}img/slide-4.jpg" alt="">
-            </div>
-            <div class="post-text col-lg-4 text-center">
-                <h3>感觉hackathon要写不完了啊...</h3>
-                <h3>
-                    
-                    <small>October 13, 2015</small>
-                </h3>
-            </div>
-            <hr>
-        </div>
-
-        <div class="post col-lg-12">
-            <div class="post-img col-lg-8">
-                <img class="col-lg-12" src="{{STATIC_URL}}img/slide-5.jpg" alt="">
-            </div>
-            <div class="post-text col-lg-4 text-center">
-                <h3>感觉hackathon要写不完了啊...</h3>
-                <h3>
-                    
-                    <small>October 13, 2016</small>
-                </h3>
-            </div>
-            <hr>
-        </div>
-
-        <div class="post col-lg-12">
-            <div class="post-img col-lg-8">
-                <img class="col-lg-12" src="{{STATIC_URL}}img/slide-6.jpg" alt="">
-            </div>
-            <div class="post-text col-lg-4 text-center">
-                <h3>感觉hackathon要写不完了啊...</h3>
-                <h3>
-                    
-                    <small>October 13, 2017</small>
-                </h3>
-            </div>
-            <hr>
-        </div>
-
-        <div class="post col-lg-12">
-            <div class="post-img col-lg-8">
-                <img class="col-lg-12" src="{{STATIC_URL}}img/slide-7.jpg" alt="">
-            </div>
-            <div class="post-text col-lg-4 text-center">
-                <h3>感觉hackathon要写不完了啊...</h3>
-                <h3>
-                    
-                    <small>October 13, 2018</small>
-                </h3>
-            </div>
-            <hr>
-        </div> -->
-
