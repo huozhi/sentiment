@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from mood.models import User, Post, Comment
+from mood.models import *
 
 import json
 import datetime
@@ -9,6 +9,7 @@ import time
 
 def index(req):
     name = req.session.get('name',None)
+    # print name
     if name is None:
         return render(req, 'index.html')
     return render(req, 'home.html', {'name':name})
@@ -20,57 +21,60 @@ def logout(req):
     return index(req)
 
 
-def jsonf(data):
-    return json.dumps(data)
 
-
-def parse_query(req):
-    query = json.loads(req.body)
-    name = query.get('name')
-    pwd = query.get('pwd')
-    if name and pwd:
-        return name,pwd
-    return None
-
-
-@csrf_exempt
 def register(req):
-    name, pwd = parse_query(req)
-    print name, pwd
-    if User.objects.get(name=name) is not None:
-        return HttpResponse(jsonf(1))
-    reguser = User(name=name, pwd=pwd)
-    try:
-        reguser.save()
-        req.session['name'] = name
-        return HttpResponse(jsonf(0))
-    except Exception:
-        return HttpResponse(jsonf(1))
+    if req.is_ajax():
+        print json.loads(req.body)
+        ret = { 'state': 0 }
+        try:
+            u = User.objects.get(name=name)
+        except User.DoesNotExist:
+            # try:
+            reguser = User(name=name, pwd=pwd)
+            reguser.save()
+            # req.session['name'] = name            
+            return HttpResponse(ret)
+        return HttpResponse(ret)
 
 
-@csrf_exempt
-def login(req):
-    if req.method == 'GET':
-        return index(req)
-    name, pwd = parse_query(req)
-    try:
-        user = User.objects.get(name=name, pwd=pwd)
-        req.session['name'] = name
-        return HttpResponse(jsonf(0))
-    except User.DoesNotExist:
-        return HttpResponse(jsonf(1))
+
+def login(req):    
+        # name, pwd = parse_query(req)
+    if req.method == 'POST':
+        uname = req.POST.get('name','')
+        # print 'session',q.name
+        return render(req, 'home.html', {'name': uname})
+    return render(req, 'index.html')
+        # req.session['name'] = q.get('name')
+        # return HttpResponse('0')
+        
+        #     print name,pwd
+        #     data = { 'state' : 0 }
+        #     # try:
+        #     user = User.objects.get(name=name, pwd=pwd)
+        #     # req.session['name'] = user.name
+        #     print data
+        #     return HttpResponse(0)
+        # else:
+        #     return index(req)
+        # except User.DoesNotExist:
+            # data['state'] = 1
+            # return HttpResponse(data)
 
 
 def user_mood(req):
-    name = req.session.get('name','')
-    if name is None:
-        return index(req)
+    # name = req.session.get('name',None)
+    # print 'session',name
+    # if name is None:
+        # return index(req)
+    # req.session['name'] = 'q'
+    return render(req, 'home.html')
     query = json.loads(req.body)
     seconds = json.loads('date')
     fts = datetime.datetime.fromtimestamp
     curdate = fts(seconds)
     postlist = Post.objects.filter(date__gt=curdate).order_by('date')[0:50]
-    return HttpResponse(jsonf(postlist))        
+    return HttpResponse(postlist)
 
 
 def post_mood(req):

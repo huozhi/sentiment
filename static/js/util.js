@@ -1,34 +1,42 @@
 'use strict';
 
 
-function ajax(url,data,success) {
+function majax(url,data,successf) {
+    // console.log(data)
     $.ajax({
         url: url,
         type: 'POST',
         contentType: 'application/json',
         dataType: 'json',
         data: JSON.stringify(data),
-        success: success,
-        error: function(err) { alert (err); }
+        success: function(ret) {
+            console.log(ret);
+            // location.href = '/user/'
+        },
+        error: function(err) { console.log(err); }
     });
 }
 
 
 function login(name, pwd) {
-    ajax('/login/', {'name':name,'pwd':pwd}, function(data) {
-        console.log(data);
-        if (data.state === 0) {
-            location.href = '/user/';
-        }
+    majax('/login/', { name:name, pwd:pwd }, function(ret) {
+        // if (ret.state === 0) {
+            // location.href = '/mood/';
+        // } else {
+            // console.log(ret);
+        // }
+        console.log(ret)
     })
 }
 
 function register(name, pwd) {
-    ajax('/reg/', {'name':name, 'pwd':pwd}, function(data) {
-        console.log(data);
-        if (data.state === 0) {
-            location.href = '/user/';
-        }
+    majax('/reg/', {'name':name, 'pwd':pwd}, function(ret) {
+        console.log(ret);
+        // if (ret.state === 0) {
+        //     location.href = '/mood/';
+        // } else {
+        //     console.log(ret);
+        // }
     })
 }
 

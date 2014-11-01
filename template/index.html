@@ -12,35 +12,38 @@
 <div class="col-lg-6 col-lg-offset-3 col-md-12">
     <div class="call-to-action bg-default">
         <div class="row">
-            <div class="col-lg-6">
-                <div class="form-group">
-                    <input id="name" type="text" class="form-control" placeholder="用户名 *">
+            <form method="POST" action="/login/" class="col-lg-12">
+                <div class="col-lg-6">
+                    <input name="name" type="text" class="form-control" placeholder="用户名 *">
                 </div><!-- /input-group -->
-            </div><!-- /.col-lg-6 -->
-            <div class="col-lg-6">
-                <div class="form-group">
-                    <input id="pwd" type="password" class="form-control" placeholder="密码 *">
+                <div class="col-lg-6">
+                    <input name="pwd" type="password" class="form-control" placeholder="密码 *">
                 </div><!-- /input-group -->
-            </div><!-- /.col-lg-6 -->
+                <br>
+                <input type="submit" class="btn btn-primary" placeholder="登陆">
+                
+            </form><!-- /.col-lg-6 -->
         </div><!-- /.row -->
-        <div class="col-lg-12 text-center">
-            <a type="button" id="login-btn" class="btn btn-primary">登陆</a>
-            <a type="button" href="/" class="btn btn-default">返回</a>
-        </div>
     </div>
 </div>
 
 {% include 'footer.html' %}
 
 <script type="text/javascript">
-$(document).ready(function() {
-    $('#login-btn').click(function() {
-        var name, pwd;
-        name = $('#name').val(),
-        pwd = $('#pwd').val();
-        register(name, pwd);
-    })
-})
+// $(document).ready(function() {
+//     $('#login-btn').click(function() {
+//         var name, pwd;
+//         name = $('#name').val(),
+//         pwd = $('#pwd').val();
+//         login(name, pwd);
+//     });
+//     $('#reg-btn').click(function() {
+//         var name, pwd;
+//         name = $('#name').val(),
+//         pwd = $('#pwd').val();
+//         register(name, pwd);
+//     })
+// })
 </script>
 
 </body>

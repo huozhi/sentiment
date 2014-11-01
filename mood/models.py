@@ -1,29 +1,27 @@
-from django.db import models
-from mongoengine import *
+from django.db.models import *
 
 # Create your models here.
 
-
-class Comment(EmbeddedDocument):
-    author = StringField(max_length=20)
-    img = StringField()
-
-
-
-class Post(EmbeddedDocument):
-    img = StringField()
-    text = StringField(max_length=200)
-    date = DateTimeField()
-    tmood = IntField()
-    imood = StringField(max_length=10)
-    public = BooleanField(default=False)
-    comments = ListField(EmbeddedDocumentField(Comment))
+# class Comment(Model):
+#     author = CharField(max_length=20)
+#     img = TextField()
 
 
 
-class User(Document):
-    name = StringField(max_length=20,required=True)
-    pwd = StringField(max_length=20,required=True)
-    posts = ListField(EmbeddedDocumentField(Post), default=None)
+class Post(Model):
+    img = ImageField(upload_to='media')
+    text = CharField(max_length=200)
+    # date = DateTimeField()
+    tmood = IntegerField()
+    imood = CharField(max_length=10)
+    # public = BooleanField(default=False)
+    # comments = (ForeignKey(Comment))
+
+
+
+class User(Model):
+    name = CharField(max_length=20)
+    pwd = CharField(max_length=20)
+    posts = ForeignKey(Post, blank=True,null=True)
 
 
