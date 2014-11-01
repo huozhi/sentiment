@@ -8,10 +8,10 @@ import datetime
 import time
 
 def index(req):
-    name = req.session.get('name',None)
-    if name is None:
-        return render(req, 'index.html')
-    return render(req, 'home.html', {'name':name})
+#    name = req.session.get('name',None)
+#    if name is None:
+#        return render(req, 'index.html')
+    return render(req, 'home.html')#, {'name':name})
 
 
 def logout(req):

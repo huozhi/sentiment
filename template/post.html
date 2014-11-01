@@ -13,13 +13,14 @@
       </div>
       <div class="modal-body">
         <div class="form">
-          <input id="img" type="file" class="form-control">
-          <input id="text" type="text" class="form-control">
+          <input id="img" type="file" class="form-control row">
+          <input id="text" type="text" class="form-control row">
         </div>
+		<canvas id="image" width="625" height="500"></canvas>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-primary">发送</button>
+        <button type="button" id="post" class="btn btn-primary">发送</button>
       </div>
     </div>
   </div>

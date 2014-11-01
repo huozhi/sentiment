@@ -1,14 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
 {% include 'header.html' %}
+	<script src="{{STATIC_URL}}js/utils.js"></script>
+	<script src="{{STATIC_URL}}js/dat.gui.min.js"></script>
+	<script src="{{STATIC_URL}}js/numeric-1.2.6.min.js"></script>
+	<script src="{{STATIC_URL}}js/mosse.js"></script>
+	<script src="{{STATIC_URL}}js/jsfeat-min.js"></script>
+	<script src="{{STATIC_URL}}js/frontalface.js"></script>
+	<script src="{{STATIC_URL}}js/jsfeat_detect.js"></script>
+	<script src="{{STATIC_URL}}js/left_eye_filter.js"></script>
+	<script src="{{STATIC_URL}}js/right_eye_filter.js"></script>
+	<script src="{{STATIC_URL}}js/nose_filter.js"></script>
+	<script src="{{STATIC_URL}}js/models/model_pca_20_svm.js"></script>
+	<script src="{{STATIC_URL}}js/clm.js"></script>
+	<script src="{{STATIC_URL}}js/svmfilter_webgl.js"></script>
+	<script src="{{STATIC_URL}}js/svmfilter_fft.js"></script>
+	<script src="{{STATIC_URL}}js/mossefilter.js"></script>
+	<script src="{{STATIC_URL}}js/Stats.js"></script>
+	
+	<script src="{{STATIC_URL}}js/clmtrackr.js"></script>
+	<script src="{{STATIC_URL}}js/models/model_pca_20_svm_emotionDetection.js"></script>
+	<script src="{{STATIC_URL}}js/d3.min.js"></script>
+	<script src="{{STATIC_URL}}js/emotion_classifier.js"></script>
+	<script src="{{STATIC_URL}}js/emotionmodel.js"></script>
+	
+	<script src="{{STATIC_URL}}js/jquery.min.js"></script>
+	<script src="{{STATIC_URL}}js/jquery.imgareaselect.pack.js"></script>
+	<script src="{{STATIC_URL}}js/BlobBuilder.min.js"></script>
+	<script src="{{STATIC_URL}}js/Filesaver.min.js"></script>
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-32642923-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+	<script>
+		$(document).ready(function() {
+			var ec = new emotionClassifier();
+			ec.init(emotionModel);
+			var emotionData = ec.getBlank();	
+			
+			$("button#post").click(function(){
+				var cp = ctrack.getCurrentParameters();
+				var er = ec.predict(cp);
+				alert(er[1].emotion+": "+er[1].value
+				+"\n"+er[0].emotion+": "+er[0].value
+				+"\n"+er[2].emotion+": "+er[2].value
+				+"\n"+er[3].emotion+": "+er[3].value);
+			});
+			var cc = document.getElementById('image').getContext('2d');	
+			var img = new Image();
+			img.onload = function() {
+				cc.drawImage(img,0,0,500, 500);
+			};
+			img.src = '{{STATIC_URL}}img/franck_02159.jpg';
+			
+			var ctrack = new clm.tracker({stopOnConvergence : true});
+			ctrack.init(pModel);
+			
+			stats = new Stats();
+			stats.domElement.style.position = 'absolute';
+			stats.domElement.style.top = '0px';			
+			var drawRequest;
+			
+			function animateClean() {
+				ctrack.start(document.getElementById('image'));
+				drawLoop();
+			}
+
+			function animate(box) {
+				ctrack.start(document.getElementById('image'), box);
+				drawLoop();
+			}
+			
+			function drawLoop() {
+				drawRequest = requestAnimFrame(drawLoop);
+				overlayCC.clearRect(0, 0, 720, 576);
+				if (ctrack.getCurrentPosition()) {
+					ctrack.draw(overlay);
+				}
+			}
+			
+			// detect if tracker fails to find a face
+			document.addEventListener("clmtrackrNotFound", function(event) {
+				ctrack.stop();
+				alert("The tracking had problems with finding a face in this image. Try selecting the face in the image manually.")
+			}, false);
+			
+			// detect if tracker loses tracking of face
+			document.addEventListener("clmtrackrLost", function(event) {
+				ctrack.stop();
+				alert("The tracking had problems converging on a face in this image. Try selecting the face in the image manually.")
+			}, false);
+			
+			// detect if tracker has converged
+			document.addEventListener("clmtrackrConverged", function(event) {
+				// stop drawloop
+				cancelRequestAnimFrame(drawRequest);
+			}, false);
+			
+			// update stats on iteration
+			document.addEventListener("clmtrackrIteration", function(event) {
+				stats.update();
+			}, false);
+
+			// manual selection of faces (with jquery imgareaselect plugin)
+			function selectBox() {
+				document.getElementById('convergence').innerHTML = "";
+				ctrack.reset();
+				$('#overlay').addClass('hide');
+				$('#image').imgAreaSelect({
+					handles : true,
+					onSelectEnd : function(img, selection) {
+						// create box
+						var box = [selection.x1, selection.y1, selection.width, selection.height];
+						
+						// do fitting
+						animate(box);
+					},
+					autoHide : true
+				});
+			}
+
+			// function to start showing images
+			function loadImage() {
+				if (fileList.indexOf(fileIndex) < 0) {
+					var reader = new FileReader();
+					reader.onload = (function(theFile) {
+						return function(e) {
+							// check if positions already exist in storage
+						
+							// Render thumbnail.
+							var canvas = document.getElementById('image')
+							var cc = canvas.getContext('2d');
+							var img = new Image();
+							img.onload = function() {
+								if (img.height > 500 || img.width > 500) {
+									var rel = img.height/img.width;
+									var neww = 500;
+									var newh = neww*rel;
+									if (newh > 500) {
+										newh = 500;
+										neww = newh/rel;
+									}
+									canvas.setAttribute('width', neww);
+									canvas.setAttribute('height', newh);
+									cc.drawImage(img,0,0,neww, newh);
+								} else {
+									canvas.setAttribute('width', img.width);
+									canvas.setAttribute('height', img.height);
+									cc.drawImage(img,0,0,img.width, img.height);
+								}
+							}
+							img.src = e.target.result;
+						};
+					})(fileList[fileIndex]);
+					reader.readAsDataURL(fileList[fileIndex]);
+					ctrack.reset();
+				}
+
+			}
+
+			// set up file selector and variables to hold selections
+			var fileList, fileIndex;
+			if (window.File && window.FileReader && window.FileList) {
+				function handleFileSelect(evt) {
+					var files = evt.target.files;
+					fileList = [];
+					for (var i = 0;i < files.length;i++) {
+						if (!files[i].type.match('image.*')) {
+							continue;
+						}
+						fileList.push(files[i]);
+					}
+					if (files.length > 0) {
+						fileIndex = 0;
+					}
+					
+					loadImage();
+					ctrack.start(document.getElementById('image'));
+				}
+				document.getElementById('img').addEventListener('change', handleFileSelect, false);
+			} else {
+				$('#img').addClass("hide");
+				$('#loadimagetext').addClass("hide");
+			}
+	});
+	</script>
 <body>
 
-<div class="jumbotron">
-    <div class="container">
-        <h1>心情盒子</h1><p>留下你的脚印，回顾心路历程...</p>
-    </div>
-    {% include 'post.html' %}
-</div>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+   {% include 'post.html' %}
+</nav>
+
 
 
     <div class="container-fluid">
