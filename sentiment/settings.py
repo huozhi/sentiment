@@ -78,21 +78,6 @@ DATABASES = {
     }
 }
 
-<<<<<<< HEAD
-
-
-_MONGODB_USER = 'root'
-_MONGODB_PASSWD = 'root'
-_MONGODB_HOST = 'localhost'
-_MONGODB_NAME = 'sentiment'
-_MONGODB_PORT = 27017
-_MONGODB_DATABASE_HOST = \
-    'mongodb://%s:%s@%s/%s' \
-    % (_MONGODB_USER, _MONGODB_PASSWD, _MONGODB_HOST, _MONGODB_NAME)
-=======
->>>>>>> 36a0105203a77594f7064d483c1024fb2013a2b5
-
-
 # AUTHENTICATION_BACKENDS = (
 #     'mongoengine.django.auth.MongoEngineBackend',
 # )

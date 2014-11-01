@@ -8,18 +8,18 @@ import datetime
 import time
 
 def index(req):
-<<<<<<< HEAD
+# <<<<<<< HEAD
 #    name = req.session.get('name',None)
 #    if name is None:
 #        return render(req, 'index.html')
-    return render(req, 'home.html')#, {'name':name})
-=======
+    # return render(req, 'home.html')#, {'name':name})
+# =======
     name = req.session.get('name',None)
     # print name
     if name is None:
         return render(req, 'index.html')
     return render(req, 'home.html', {'name':name})
->>>>>>> 36a0105203a77594f7064d483c1024fb2013a2b5
+# >>>>>>> 36a0105203a77594f7064d483c1024fb2013a2b5
 
 
 def logout(req):
