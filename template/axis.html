@@ -1,8 +1,52 @@
-<!doctype html>
+<!doctype>
 <html>
-{% include header.html %}
-<body>
+{% include 'header.html' %}
 
-{% include footer.html %}
+
+<body>
+<div class="text-center block-center conatiner">
+    <canvas id="myChart" width="1000" height="400"></canvas>
+</div>
+<!-- <br> -->
+<div class="conatiner">
+    <div class="row">
+      <div class="col-lg-2 col-md-4">
+        <div class="thumbnail">
+          <img src="/static/img/slide-1.jpg" width="200" height="200" alt="...">
+          <div class="caption">
+            <p>心情也是弱爆了啊</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+</div>
+{% include 'footer.html' %}
+<script type="text/javascript" src="/static/js/Chart.min.js"></script>
+<script type="text/javascript">
+var data = {
+    labels : ["day1","day2","day3","day4","day5","day6","day7"],
+    datasets : [
+        {
+            fillColor : "rgba(151,187,205,0.5)",
+            strokeColor : "rgba(151,187,205,1)",
+            pointColor : "rgba(151,187,205,1)",
+            pointStrokeColor : "#fff",
+            data : [0.25,0.59,-0.70,0.11,0.56,-0.75,-0.13]
+        },
+        // {
+        //     fillColor : "rgba(151,187,205,0.5)",
+        //     strokeColor : "rgba(151,187,205,1)",
+        //     pointColor : "rgba(151,187,205,1)",
+        //     pointStrokeColor : "#fff",
+        //     data : [28,48,40,19,96,27,100]
+        // }
+    ]
+}
+var ctx = $("#myChart").get(0).getContext("2d");
+//This will get the first returned node in the jQuery collection.
+var myNewChart = new Chart(ctx).Line(data);
+
+</script>
 </body>
 </html>
