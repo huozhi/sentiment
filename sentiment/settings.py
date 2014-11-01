@@ -67,8 +67,6 @@ DATABASES = {
     },
 }
 
-
-
 _MONGODB_USER = 'root'
 _MONGODB_PASSWD = 'root'
 _MONGODB_HOST = 'localhost'
