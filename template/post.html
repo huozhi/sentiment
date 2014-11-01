@@ -11,25 +11,27 @@
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         <h4 class="modal-title" id="myModalLabel">心情</h4>
       </div>
-      <form class="modal-body" action="/mood/" method="post">
-        <div class="form">
-
-          <input id="img" name="img" type="file" class="form-control " >
-          <input id="text" name="text" type="text" class="form-control " >
-        </div>
-    <canvas id="image" width="625" height="500"></canvas>
-    <div class="btn-group btn-group-justified">
-      <div class="btn-group"><button type="button" id="angry" name="angry"class="btn btn-danger" value=0>生气</button></div>
-      <div class="btn-group"><button type="button" id="sad" name="sad"class="btn btn-primary" value=0>忧伤</button></div>
-      <div class="btn-group"><button type="button" id="happy" name="happy" class="btn btn-success" value=0>开心</button></div>
-      <div class="btn-group"><button type="button" id="surprised" name="surprised" class="btn btn-warning" value=0>惊讶</button></div>
-    </div>
-
+      <div class="modal-body post-form">
+        <input type="file" id="img" name="img" class="form-control sr-only" >
+        <textarea id="text" name="text" type="text" class="form-control" rows="5"></textarea>
       </div>
+    
+      <div class="container-fluid text-center block-center">
+        <canvas id="image" width="550" height="500" class=""></canvas>
+      </div>
+      
+      <div class="btn-group btn-group-justified">
+        <div class="btn-group"><button type="button" id="angry" name="angry"class="btn btn-danger" value="0">生气</button></div>
+        <div class="btn-group"><button type="button" id="sad" name="sad"class="btn btn-primary" value="0">忧伤</button></div>
+        <div class="btn-group"><button type="button" id="happy" name="happy" class="btn btn-success" value="0">开心</button></div>
+        <div class="btn-group"><button type="button" id="surprised" name="surprised" class="btn btn-warning" value="0">惊讶</button></div>
+      </div>
+
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="submit" id="post" class="btn btn-primary">发送</button>
+        <button class="btn btn-default" data-dismiss="modal">取消</button>
+        <button id="post-btn" class="btn btn-primary">发送</button>
       </div>
     </div>
   </div>
 </div>
+

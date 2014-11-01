@@ -9,10 +9,10 @@ from django.db.models import *
 
 
 class Post(Model):
-    img = ImageField(upload_to='media')
+    img = TextField()
     text = CharField(max_length=200)
     # date = DateTimeField()
-    tmood = IntegerField()
+    tmood = FloatField()
     imood = CharField(max_length=10)
     # public = BooleanField(default=False)
     # comments = (ForeignKey(Comment))

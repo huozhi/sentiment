@@ -5,24 +5,26 @@
 
 <body>
 <div class="page-header col-lg-6 col-lg-offset-3 text-center">
-  <h1><small>登陆</small> 心情盒子</h1>
+  <h1><small>登陆</small> 心情轴</h1>
   
 </div>
 
 <div class="col-lg-6 col-lg-offset-3 col-md-12">
     <div class="call-to-action bg-default">
         <div class="row">
-            <form method="POST" action="/login/" class="col-lg-12">
+            <!-- <form method="POST" action="/login/" class="col-lg-12"> -->
+            <div class="col-lg-12 login-form">
                 <div class="col-lg-4">
-                    <input name="name" type="text" class="form-control" placeholder="用户名 *">
+                    <input name="name" type="text" class="form-control" placeholder="用户名 *" autocomplete="off">
                 </div><!-- /input-group -->
                 <div class="col-lg-4">
-                    <input name="pwd" type="password" class="form-control" placeholder="密码 *">
+                    <input name="pwd" type="password" class="form-control" placeholder="密码 *" autocomplete="off">
                 </div><!-- /input-group -->
                 
-                <input type="submit" class="btn btn-primary" value="登陆">
-                
-            </form><!-- /.col-lg-6 -->
+                <button class="btn btn-default" id="login-btn">登陆</button>
+                <button class="btn btn-primary" id="reg-btn">注册</button>
+            </div>
+            <!-- </form> -->
         </div><!-- /.row -->
     </div>
 </div>
@@ -30,20 +32,32 @@
 {% include 'footer.html' %}
 
 <script type="text/javascript">
-// $(document).ready(function() {
-//     $('#login-btn').click(function() {
-//         var name, pwd;
-//         name = $('#name').val(),
-//         pwd = $('#pwd').val();
-//         login(name, pwd);
-//     });
-//     $('#reg-btn').click(function() {
-//         var name, pwd;
-//         name = $('#name').val(),
-//         pwd = $('#pwd').val();
-//         register(name, pwd);
-//     })
-// })
+$(document).ready(function() {
+    $('#login-btn').click(function() {
+        var name, pwd
+        uname = $('#name').val(),
+        upwd = $('#pwd').val()
+        $.post('/login/', {
+            name: uname,
+            pwd: upwd
+        }, function(ret) {
+            console.log(ret)
+            location.href = '/mood/'
+        })
+    });
+    $('#reg-btn').click(function() {
+        var name, pwd;
+        name = $('#name').val(),
+        pwd = $('#pwd').val();
+        $.post('/reg/', {
+            name: uname,
+            pwd: upwd
+        }, function(ret) {
+            console.log(ret)
+            location.href = '/mood/'
+        })
+    })
+})
 </script>
 
 </body>

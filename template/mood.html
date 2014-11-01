@@ -1,0 +1,24 @@
+<!doctype>
+<html>
+{% include 'header.html' %}
+<body>
+
+<div>
+    <input id="text" type="text" class="form-control">
+    <button class="btn btn-primary">send</button>
+</div>
+
+{% include 'footer.html' %}
+
+<script type="text/javascript">
+$('button').click(function() {
+
+    $.post('/test/', {
+        text: $('#text').val()
+    }, function(data) { 
+        console.log(data)
+    })
+})
+</script>
+</body>
+</html>

@@ -32,7 +32,6 @@ def logout(req):
 def register(req):
     if req.is_ajax():
         print json.loads(req.body)
-        ret = { 'state': 0 }
         try:
             u = User.objects.get(name=name)
         except User.DoesNotExist:
@@ -40,33 +39,50 @@ def register(req):
             reguser = User(name=name, pwd=pwd)
             reguser.save()
             # req.session['name'] = name            
-            return HttpResponse(ret)
-        return HttpResponse(ret)
+            return HttpResponse(0)
+        return HttpResponse(1)
 
 
 
 def login(req):    
-        # name, pwd = parse_query(req)
-    if req.method == 'POST':
+    if req.is_ajax():
         uname = req.POST.get('name','')
-        
-        return render(req, 'home.html', {'name': uname})
-    return render(req, 'index.html')
+        upwd = req.POST.get('pwd','')
+        try:
+            user = User.objects.get(name=uname,pwd=upwd)
+        except User.DoesNotExist:
+            return render(req, 'index.html')        
+    return render(req, 'home.html', {'name': uname})
 
 
 def user_mood(req):
-    posts = None
+    # pass
+    # posts = None
     # posts = Post.objects.all()[0:8]
-    return render(req, 'home.html', {'posts':posts})
+    return render(req, 'home.html')
 
 
 
 def post_mood(req):
-    if req.method == 'POST':
-        f = req.FILES.get['']
+    if req.is_ajax():
+        text = req.POST.get('text','')
+        imgurl = req.POST.get('img', '')
+        print text, len(imgurl)
+        post = Post()
+        return HttpResponse(0)
+    return HttpResponse(1)
 
 
 
 
 def axis(req):
     return render(req, 'axis.html', locals())
+
+
+def test(req):
+    if req.is_ajax():
+        text = req.POST.get('text', None)
+        print text
+        return HttpResponse(text)
+    else:
+        return render(req, 'mood.html')

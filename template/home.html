@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {% include 'header.html' %}
-
+    <script src="{{STATIC_URL}}js/jquery-1.11.0.js"></script>
     <script src="{{STATIC_URL}}js/utils.js"></script>
     <script src="{{STATIC_URL}}js/dat.gui.min.js"></script>
     <script src="{{STATIC_URL}}js/numeric-1.2.6.min.js"></script>
@@ -17,7 +17,6 @@
     <script src="{{STATIC_URL}}js/svmfilter_webgl.js"></script>
     <script src="{{STATIC_URL}}js/svmfilter_fft.js"></script>
     <script src="{{STATIC_URL}}js/mossefilter.js"></script>
-    <script src="{{STATIC_URL}}js/Stats.js"></script>
     
     <script src="{{STATIC_URL}}js/clmtrackr.js"></script>
     <script src="{{STATIC_URL}}js/models/model_pca_20_svm_emotionDetection.js"></script>
@@ -25,61 +24,55 @@
     <script src="{{STATIC_URL}}js/emotion_classifier.js"></script>
     <script src="{{STATIC_URL}}js/emotionmodel.js"></script>
     
-    <script src="{{STATIC_URL}}js/jquery.min.js"></script>
     <script src="{{STATIC_URL}}js/jquery.imgareaselect.pack.js"></script>
     <script src="{{STATIC_URL}}js/BlobBuilder.min.js"></script>
     <script src="{{STATIC_URL}}js/Filesaver.min.js"></script>
-    <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-32642923-1']);
-        _gaq.push(['_trackPageview']);
-
-        (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-    </script>
+   
     <script>
         $(document).ready(function() {
+            var imgUrl = '';
             var ec = new emotionClassifier();
             ec.init(emotionModel);
             var emotionData = ec.getBlank();    
             
-            $("button#post").click(function(){
+            $("#post-btn").click(function(){
                 var cp = ctrack.getCurrentParameters();
                 var er = ec.predict(cp);
-                var major=$('#angry').val();
-                var majorname="angry";
+                var major = $('#angry').val();
+                var majorname = "angry";
                 $('#angry').val(er[0].value.toString());
                 $('#sad').val(er[1].value.toString());
                 $('#surprised').val(er[2].value.toString());
                 $('#happy').val(er[3].value.toString());
                 var majorindex=0;
-                for(var i=1;i<4;i++)
-                {
-                    if(er[i].value>er[majorindex].value)
-                        majorindex=i;
+                for(var i = 1;i < 4; i++) {
+                    if(er[i].value > er[majorindex].value)
+                        majorindex = i;
                 }
-                for(var i=0;i<4;i++)
-                {
+
+                for(var i = 0;i < 4; i++) {
                     if(i != majorindex)
-                        $('#'+er[i].emotion).addClass('hide');
+                        $('#' + er[i].emotion).addClass('hide');
                 }
+
+                var postMood = {
+                    img: imgUrl,
+                    text: $('#text').val(),
+                    emotion: er[majorindex].emotion
+                }
+                $.post('/post/', postMood, function(ret) {
+                    console.log(ret);
+                })
             });
+
             var cc = document.getElementById('image').getContext('2d'); 
-            var img = new Image();
-            img.onload = function() {
-                cc.drawImage(img,0,0,500, 500);
-            };
-            img.src = '{{STATIC_URL}}img/franck_02159.jpg';
-            
+            $('#image').click(function(){
+                $('#img').click();
+            })
+
             var ctrack = new clm.tracker({stopOnConvergence : true});
             ctrack.init(pModel);
             
-            stats = new Stats();
-            stats.domElement.style.position = 'absolute';
-            stats.domElement.style.top = '0px';         
             var drawRequest;
             
             function animateClean() {
@@ -103,7 +96,7 @@
             // detect if tracker fails to find a face
             document.addEventListener("clmtrackrNotFound", function(event) {
                 ctrack.stop();
-                alert("人丑就该多读书")
+                console.log("也是有点识别不出来啊....换一张吧")
             }, false);
             
             // detect if tracker loses tracking of face
@@ -114,9 +107,9 @@
             }, false);
             
             // update stats on iteration
-            document.addEventListener("clmtrackrIteration", function(event) {
-                stats.update();
-            }, false);
+            // document.addEventListener("clmtrackrIteration", function(event) {
+            //     stats.update();
+            // }, false);
 
             // manual selection of faces (with jquery imgareaselect plugin)
             function selectBox() {
@@ -149,23 +142,23 @@
                             var cc = canvas.getContext('2d');
                             var img = new Image();
                             img.onload = function() {
-                                if (img.height > 500 || img.width > 500) {
-                                    var rel = img.height/img.width;
-                                    var neww = 500;
-                                    var newh = neww*rel;
-                                    if (newh > 500) {
-                                        newh = 500;
-                                        neww = newh/rel;
+                                if (img.height > 500 || img.width > 550) {
+                                    var rel = parseFloat(img.height)/img.width;
+                                    var neww = 550 * rel;
+                                    var newh = 500 * rel;
+                                    if (img.height <= 500 && neww > 550) {
+                                        neww = 550;
+                                        // newh = newh * neww/rel;
                                     }
-                                    canvas.setAttribute('width', neww);
-                                    canvas.setAttribute('height', newh);
-                                    cc.drawImage(img,0,0,neww, newh);
-                                } else {
-                                    canvas.setAttribute('width', img.width);
-                                    canvas.setAttribute('height', img.height);
-                                    cc.drawImage(img,0,0,img.width, img.height);
                                 }
+                                canvas.setAttribute('width', img.width);
+                                canvas.setAttribute('height', img.height);
+                                cc.drawImage(img,parseFloat(550-img.width)/2,
+                                    parseFloat(500-img.height)/2,550, 500);
                             }
+                             
+                            // console.log(e.target.result)
+                            imgUrl = e.target.result;
                             img.src = e.target.result;
                         };
                     })(fileList[fileIndex]);
@@ -176,7 +169,7 @@
             }
 
             // set up file selector and variables to hold selections
-            var fileList, fileIndex;
+            var fileList, fileIndex = 0;
             if (window.File && window.FileReader && window.FileList) {
                 function handleFileSelect(evt) {
                     var files = evt.target.files;
@@ -196,7 +189,7 @@
                 }
                 document.getElementById('img').addEventListener('change', handleFileSelect, false);
             } else {
-                $('#img').addClass("hide");
+                // $('#img').addClass("hide");
                 $('#loadimagetext').addClass("hide");
             }
     });
@@ -206,7 +199,7 @@
 
 <div class="jumbotron">
     <div class="container">
-        <h1>心情盒子</h1><p>留下你的脚印，回顾心路历程...</p>
+        <h1>心情轴</h1><p>留下你的脚印，回顾心路历程...</p>
     </div>
     {% include 'post.html' %}
 </div>
@@ -236,7 +229,6 @@
                 <h3>
                     <small>October 13, 2014</small>
                 </h3>
-                <!-- <a href="#" class="btn btn-default btn-lg">Read More</a> -->
             </div>
             <hr>
         </div>
@@ -251,10 +243,80 @@
                     
                     <small>October 13, 2015</small>
                 </h3>
-                <!-- <a href="#" class="btn btn-default btn-lg">Read More</a> -->
             </div>
             <hr>
         </div>
+
+        <div class="post col-lg-12">
+            <div class="post-img col-lg-8">
+                <img class="col-lg-12" src="{{STATIC_URL}}img/slide-4.jpg" alt="">
+            </div>
+            <div class="post-text col-lg-4 text-center">
+                <h3>感觉hackathon要写不完了啊...</h3>
+                <h3>
+                    
+                    <small>October 13, 2015</small>
+                </h3>
+            </div>
+            <hr>
+        </div>
+
+        <div class="post col-lg-12">
+            <div class="post-img col-lg-8">
+                <img class="col-lg-12" src="{{STATIC_URL}}img/slide-4.jpg" alt="">
+            </div>
+            <div class="post-text col-lg-4 text-center">
+                <h3>感觉hackathon要写不完了啊...</h3>
+                <h3>
+                    
+                    <small>October 13, 2015</small>
+                </h3>
+            </div>
+            <hr>
+        </div>
+
+        <div class="post col-lg-12">
+            <div class="post-img col-lg-8">
+                <img class="col-lg-12" src="{{STATIC_URL}}img/slide-5.jpg" alt="">
+            </div>
+            <div class="post-text col-lg-4 text-center">
+                <h3>感觉hackathon要写不完了啊...</h3>
+                <h3>
+                    
+                    <small>October 13, 2016</small>
+                </h3>
+            </div>
+            <hr>
+        </div>
+
+        <div class="post col-lg-12">
+            <div class="post-img col-lg-8">
+                <img class="col-lg-12" src="{{STATIC_URL}}img/slide-6.jpg" alt="">
+            </div>
+            <div class="post-text col-lg-4 text-center">
+                <h3>感觉hackathon要写不完了啊...</h3>
+                <h3>
+                    
+                    <small>October 13, 2017</small>
+                </h3>
+            </div>
+            <hr>
+        </div>
+
+        <div class="post col-lg-12">
+            <div class="post-img col-lg-8">
+                <img class="col-lg-12" src="{{STATIC_URL}}img/slide-7.jpg" alt="">
+            </div>
+            <div class="post-text col-lg-4 text-center">
+                <h3>感觉hackathon要写不完了啊...</h3>
+                <h3>
+                    
+                    <small>October 13, 2018</small>
+                </h3>
+            </div>
+            <hr>
+        </div>
+
 
         <div class="col-lg-12 text-center">
             <ul class="pager">
