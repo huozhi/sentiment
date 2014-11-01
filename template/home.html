@@ -48,10 +48,23 @@
 			$("button#post").click(function(){
 				var cp = ctrack.getCurrentParameters();
 				var er = ec.predict(cp);
-				alert(er[1].emotion+": "+er[1].value
-				+"\n"+er[0].emotion+": "+er[0].value
-				+"\n"+er[2].emotion+": "+er[2].value
-				+"\n"+er[3].emotion+": "+er[3].value);
+				var major=$('#angry').val();
+				var majorname="angry";
+				$('#angry').val(er[0].value.toString());
+				$('#sad').val(er[1].value.toString());
+				$('#surprised').val(er[2].value.toString());
+				$('#happy').val(er[3].value.toString());
+				var majorindex=0;
+				for(var i=1;i<4;i++)
+				{
+					if(er[i].value>er[majorindex].value)
+						majorindex=i;
+				}
+				for(var i=0;i<4;i++)
+				{
+					if(i != majorindex)
+						$('#'+er[i].emotion).addClass('hide');
+				}
 			});
 			var cc = document.getElementById('image').getContext('2d');	
 			var img = new Image();
@@ -89,15 +102,10 @@
 			// detect if tracker fails to find a face
 			document.addEventListener("clmtrackrNotFound", function(event) {
 				ctrack.stop();
-				alert("The tracking had problems with finding a face in this image. Try selecting the face in the image manually.")
+				alert("人丑就该多读书")
 			}, false);
 			
 			// detect if tracker loses tracking of face
-			document.addEventListener("clmtrackrLost", function(event) {
-				ctrack.stop();
-				alert("The tracking had problems converging on a face in this image. Try selecting the face in the image manually.")
-			}, false);
-			
 			// detect if tracker has converged
 			document.addEventListener("clmtrackrConverged", function(event) {
 				// stop drawloop
