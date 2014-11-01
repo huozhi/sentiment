@@ -12,13 +12,12 @@
 <div class="col-lg-6 col-lg-offset-3 col-md-12">
     <div class="call-to-action bg-default">
         <div class="row">
-            <!-- <form method="POST" action="/login/" class="col-lg-12"> -->
             <div class="col-lg-12 login-form">
                 <div class="col-lg-4">
-                    <input name="name" type="text" class="form-control" placeholder="用户名 *" autocomplete="off">
+                    <input id="name" type="text" class="form-control" placeholder="用户名 *" autocomplete="off">
                 </div><!-- /input-group -->
                 <div class="col-lg-4">
-                    <input name="pwd" type="password" class="form-control" placeholder="密码 *" autocomplete="off">
+                    <input id="pwd" type="password" class="form-control" placeholder="密码 *" autocomplete="off">
                 </div><!-- /input-group -->
                 
                 <button class="btn btn-default" id="login-btn">登陆</button>
@@ -34,7 +33,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
     $('#login-btn').click(function() {
-        var name, pwd
+        var uname, upwd;
         uname = $('#name').val(),
         upwd = $('#pwd').val()
         $.post('/login/', {
@@ -46,9 +45,9 @@ $(document).ready(function() {
         })
     });
     $('#reg-btn').click(function() {
-        var name, pwd;
-        name = $('#name').val(),
-        pwd = $('#pwd').val();
+        var uname, upwd;
+        uname = $('#name').val(),
+        upwd = $('#pwd').val();
         $.post('/reg/', {
             name: uname,
             pwd: upwd

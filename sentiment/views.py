@@ -2,24 +2,18 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from mood.models import *
+from snownlp import SnowNLP
 
 import json
 import datetime
 import time
 
 def index(req):
-# <<<<<<< HEAD
-#    name = req.session.get('name',None)
-#    if name is None:
-#        return render(req, 'index.html')
-    # return render(req, 'home.html')#, {'name':name})
-# =======
     name = req.session.get('name',None)
     # print name
     if name is None:
         return render(req, 'index.html')
     return render(req, 'home.html', {'name':name})
-# >>>>>>> 36a0105203a77594f7064d483c1024fb2013a2b5
 
 
 def logout(req):
@@ -31,28 +25,33 @@ def logout(req):
 
 def register(req):
     if req.is_ajax():
-        print json.loads(req.body)
+        uname = req.POST.get('name','')
+        upwd = req.POST.get('pwd','')
+        print 'reg',uname,upwd
         try:
-            u = User.objects.get(name=name)
+            reguser = User.objects.get(name=uname)
         except User.DoesNotExist:
-            # try:
-            reguser = User(name=name, pwd=pwd)
+            reguser = User(name=uname, pwd=upwd)
             reguser.save()
-            # req.session['name'] = name            
             return HttpResponse(0)
         return HttpResponse(1)
-
+    return render(req, 'index.html')
 
 
 def login(req):    
     if req.is_ajax():
-        uname = req.POST.get('name','')
-        upwd = req.POST.get('pwd','')
+        uname = req.POST.get('name',None)
+        upwd = req.POST.get('pwd',None)
+        if uname is None or upwd is None:
+            return render(req, 'index.html')
+        print uname, upwd
         try:
             user = User.objects.get(name=uname,pwd=upwd)
         except User.DoesNotExist:
-            return render(req, 'index.html')        
-    return render(req, 'home.html', {'name': uname})
+            return render(req, 'index.html')
+        return HttpResponse(0)
+    else:
+        return render(req, 'index.html', {'name': uname})
 
 
 def user_mood(req):
@@ -67,8 +66,22 @@ def post_mood(req):
     if req.is_ajax():
         text = req.POST.get('text','')
         imgurl = req.POST.get('img', '')
+        imood = req.POST.get('emotion', 'normal')
         print text, len(imgurl)
-        post = Post()
+        # user = None
+        try:
+            user = User.objects.get(name='a')
+            print 'get', user
+        except:
+            user = User(name='a')
+            # user.save()
+            print user
+            # return HttpResponse(1)
+        print user.name,user.pwd
+        # user.save()
+        post = Post(img=imgurl,text=text,imood=imood,poster=user)
+        # print post.img,post.text,post.imood,post.poster
+        post.save()
         return HttpResponse(0)
     return HttpResponse(1)
 

@@ -6,6 +6,10 @@ from django.db.models import *
 #     author = CharField(max_length=20)
 #     img = TextField()
 
+class User(Model):
+    name = CharField(max_length=20)
+    pwd = CharField(max_length=20)
+
 
 
 class Post(Model):
@@ -16,12 +20,8 @@ class Post(Model):
     imood = CharField(max_length=10)
     # public = BooleanField(default=False)
     # comments = (ForeignKey(Comment))
+    poster = ForeignKey(User, blank=True,null=True)
 
 
-
-class User(Model):
-    name = CharField(max_length=20)
-    pwd = CharField(max_length=20)
-    posts = ForeignKey(Post, blank=True,null=True)
 
 
