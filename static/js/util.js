@@ -7,7 +7,7 @@ function ajax(url,data,success) {
         type: 'POST',
         contentType: 'application/json',
         dataType: 'json',
-        data: JSON.srtingify(data),
+        data: JSON.stringify(data),
         success: success,
         error: function(err) { alert (err); }
     });
@@ -23,8 +23,15 @@ function login(name, pwd) {
     })
 }
 
-function register() {
-
+function register(name, pwd) {
+    ajax('/reg/', {'name':name, 'pwd':pwd}, function(data) {
+        console.log(data);
+        if (data.state === 0) {
+            location.href = '/user/';
+        }
+    })
 }
 
-function 
+function getDataURL(imageFile) {
+    return URL.createObjectURL(imageFile);
+}
