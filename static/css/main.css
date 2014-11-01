@@ -29,3 +29,9 @@ font-family: "Open Sans", "HelveticaNeue-Light Light", Arial, Helvetica, "Lucida
     position: relative;
     /*height: 100%;*/
 }
+
+.row {
+    position: relative;
+    margin-left: -400px;
+    left: 50%;
+}
