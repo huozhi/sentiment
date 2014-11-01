@@ -36,6 +36,7 @@ def parse_query(req):
 @csrf_exempt
 def register(req):
     name, pwd = parse_query(req)
+    print name, pwd
     if User.objects.get(name=name) is not None:
         return HttpResponse(jsonf(1))
     reguser = User(name=name, pwd=pwd)

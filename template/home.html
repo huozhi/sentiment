@@ -2,103 +2,69 @@
 <html lang="en">
 {% include 'header.html' %}
 <body>
-    <nav class="navbar navbar-default" role="navigation">
-      <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <!-- <a class="navbar-brand" href="#">导航</a> -->
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          
-          <ul class="nav navbar-nav navbar-right">
-              <div class="navbar-form navbar-left" role="search">
-                <div class="form-group">
-                  <input type="text" class="form-control" placeholder="用户名">
-                </div>
-                <div class="form-group">
-                  <input type="password" class="form-control" placeholder="密码">
-                </div>
-                <button type="submit" class="btn btn-primary">注册</button>
-                <button type="submit" class="btn btn-default">登陆</button>
-              </div>
-            
-          </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
-    </nav>
 
 <div class="jumbotron">
     <div class="container">
         <h1>心情盒子</h1><p>留下你的脚印，回顾心路历程...</p>
     </div>
+    {% include 'post.html' %}
 </div>
 
 
     <div class="container-fluid">
+        <div class="post col-lg-12">
+            <div class="post-img col-lg-8">
+                <img class="col-lg-12" src="{{STATIC_URL}}img/slide-1.jpg" alt="">
+            </div>
+            <div class="post-text col-lg-4 text-center">
+                <h3>心情啦啦啦啦</h3>
+                <h3>
+                    <small>October 13, 2013</small>
+                </h3>
+                <!-- <a href="#" class="btn btn-default btn-lg">Read More</a> -->
+            </div>
+            <hr>
+        </div>
+        
+        <div class="post col-lg-12">
+            <div class="post-img col-lg-8">
+                <img class="col-lg-12" src="{{STATIC_URL}}img/slide-2.jpg" alt="">
+            </div>
+            <div class="post-text col-lg-4 text-center">
+                <h3>听说颢神考试挂了好开心啊</h3>
+                <h3>
+                    <small>October 13, 2014</small>
+                </h3>
+                <!-- <a href="#" class="btn btn-default btn-lg">Read More</a> -->
+            </div>
+            <hr>
+        </div>
 
+        <div class="post col-lg-12">
+            <div class="post-img col-lg-8">
+                <img class="col-lg-12" src="{{STATIC_URL}}img/slide-3.jpg" alt="">
+            </div>
+            <div class="post-text col-lg-4 text-center">
+                <h3>有点不开心啊.</h3>
+                <h3>
+                    
+                    <small>October 13, 2015</small>
+                </h3>
+                <!-- <a href="#" class="btn btn-default btn-lg">Read More</a> -->
+            </div>
+            <hr>
+        </div>
 
-                <div class="post col-lg-12">
-                    <div class="post-img col-lg-8">
-                        <img class="col-lg-12" src="{{STATIC_URL}}img/slide-1.jpg" alt="">
-                    </div>
-                    <div class="post-text col-lg-4 text-center">
-                        <h3>心情啦啦啦啦</h3>
-                        <h3>
-                            <small>October 13, 2013</small>
-                        </h3>
-                        <!-- <a href="#" class="btn btn-default btn-lg">Read More</a> -->
-                    </div>
-                    <hr>
-                </div>
-                
-                <div class="post col-lg-12">
-                    <div class="post-img col-lg-8">
-                        <img class="col-lg-12" src="{{STATIC_URL}}img/slide-2.jpg" alt="">
-                    </div>
-                    <div class="post-text col-lg-4 text-center">
-                        <h3>听说颢神考试挂了好开心啊</h3>
-                        <h3>
-                            <small>October 13, 2014</small>
-                        </h3>
-                        <!-- <a href="#" class="btn btn-default btn-lg">Read More</a> -->
-                    </div>
-                    <hr>
-                </div>
-
-                <div class="post col-lg-12">
-                    <div class="post-img col-lg-8">
-                        <img class="col-lg-12" src="{{STATIC_URL}}img/slide-3.jpg" alt="">
-                    </div>
-                    <div class="post-text col-lg-4 text-center">
-                        <h3>有点不开心啊.</h3>
-                        <h3>
-                            
-                            <small>October 13, 2015</small>
-                        </h3>
-                        <!-- <a href="#" class="btn btn-default btn-lg">Read More</a> -->
-                    </div>
-                    <hr>
-                </div>
-
-                <div class="col-lg-12 text-center">
-                    <ul class="pager">
-                        <li class="previous"><a href="#">&larr; Older</a>
-                        </li>
-                        <li class="next"><a href="#">Newer &rarr;</a>
-                        </li>
-                    </ul>
-                </div>
+        <div class="col-lg-12 text-center">
+            <ul class="pager">
+                <li class="previous"><a href="#">&larr; Older</a>
+                </li>
+                <li class="next"><a href="#">Newer &rarr;</a>
+                </li>
+            </ul>
+        </div>
 
     </div>
-    <!-- /.container -->
 
     <footer>
         <div class="container">
@@ -111,6 +77,8 @@
     </footer>
 
 {% include 'footer.html' %}
+
+
 </body>
 
 </html>

@@ -14,22 +14,34 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="用户名 *">
+                    <input id="name" type="text" class="form-control" placeholder="用户名 *">
                 </div><!-- /input-group -->
             </div><!-- /.col-lg-6 -->
             <div class="col-lg-6">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="密码 *">
+                    <input id="pwd" type="password" class="form-control" placeholder="密码 *">
                 </div><!-- /input-group -->
             </div><!-- /.col-lg-6 -->
         </div><!-- /.row -->
         <div class="col-lg-12 text-center">
             <a type="button" id="login-btn" class="btn btn-primary">登陆</a>
-            <a type="button" href="/#contact" class="btn btn-default">返回</a>
+            <a type="button" href="/" class="btn btn-default">返回</a>
         </div>
     </div>
 </div>
 
 {% include 'footer.html' %}
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#login-btn').click(function() {
+        var name, pwd;
+        name = $('#name').val(),
+        pwd = $('#pwd').val();
+        register(name, pwd);
+    })
+})
+</script>
+
 </body>
 </html>

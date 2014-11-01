@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^reg/$', 'sentiment.views.register', name='reg'),
     url(r'^login/$', 'sentiment.views.login', name='login'),
-    url(r'^user/$', 'sentiment.views.usermood', name='user_mood'),
+    url(r'^user/$', 'sentiment.views.user_mood', name='user_mood'),
     url(r'^axis/', 'sentiment.views.axis', name='axis'),
+    url(r'^user/post/', 'sentiment.views.post_mood', name='post_mood'),
 )
