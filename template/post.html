@@ -13,10 +13,16 @@
       </div>
       <div class="modal-body">
         <div class="form">
-          <input id="img" type="file" class="form-control row">
-          <input id="text" type="text" class="form-control row">
+          <input id="img" type="file" class="form-control row" style="margin-left:5px">
+          <input id="text" type="text" class="form-control row" style="margin-top:10px;margin-left:5px">
         </div>
-		<canvas id="image" width="625" height="500"></canvas>
+		<canvas id="image" width="625" height="500" style="margin-top:10px;margin-left:5px"></canvas>
+		<div class="btn-group btn-group-justified">
+			<div class="btn-group"><button type="button" id="angry" class="btn btn-danger">生气</button></div>
+			<div class="btn-group"><button type="button" id="sad" class="btn btn-primary">忧伤</button></div>
+			<div class="btn-group"><button type="button" id="happy" class="btn btn-success">开心</button></div>
+			<div class="btn-group"><button type="button" id="surprised" class="btn btn-warning">惊讶</button></div>
+		</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
