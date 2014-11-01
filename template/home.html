@@ -152,10 +152,14 @@
                                         // newh = newh * neww/rel;
                                     }
                                 }
-                                canvas.setAttribute('width', img.width);
-                                canvas.setAttribute('height', img.height);
-                                cc.drawImage(img,parseFloat(550-img.width)/2,
-                                    parseFloat(500-img.height)/2,550, 500);
+                                // canvas.setAttribute('width', img.width);
+                                // canvas.setAttribute('height', img.height);
+                                console.log(parseFloat(550-img.width)/2,
+                                    parseFloat(500-img.height)/2,
+                                    img.width,
+                                    img.height)
+                                cc.drawImage(img,0,
+                                    0,550, 500);
                             }
                              
                             // console.log(e.target.result)

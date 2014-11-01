@@ -62,8 +62,9 @@ $(document).ready(function(){
   var dataList = []
 
   $('.values').children().each(function(index, ele){
-    dataList.push($(ele).val())
+    dataList.push(parseFloat($(ele).text()))
   })
+  console.log(dataList)
   var data = {
       labels : ["day1","day2","day3","day4","day5","day6","day7"],
       datasets : [
