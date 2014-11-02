@@ -1,7 +1,15 @@
-sentiment
+Mood Axis
 =========
 
-- About
+About
+------
 
-This is a social contact web app to post your mood and photos.
+Mood Axis is a social contact web app to post your mood and photos.
 It will analyse your sentiment from your posts.
+
+
+Support
+-------
+
+Chinese word segmentation : SnowNLP
+Face emotion detection: clmtracker
