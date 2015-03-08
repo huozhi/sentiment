@@ -1,7 +1,10 @@
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from mood.models import *
+from django.views.decorators.http import require_GET, require_POST
+from django.contrib.auth.decorators import login_required
+
+from apps.mood.models import *
 from snownlp import SnowNLP
 
 import json
@@ -13,95 +16,90 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-def index(req):
-    name = req.session.get('name',None)
-    if name is None:
-        return render(req, 'index.html')
-    return render(req, 'home.html', {'name':name})
 
 
-def logout(req):
-    if req.session.get('name',None):
-        del req.session['name']
-    return index(req)
+@require_GET
+# @login_required(redirect_field_name='/axis/')
+def home(request):
+    username = request.session.get('username', 'hehe')
+    return render(request, 'home.html', { 'username': username })
 
 
-
-def register(req):
-    if req.is_ajax():
-        uname = req.POST.get('name','')
-        upwd = req.POST.get('pwd','')
-        print 'reg',uname,upwd
+def register(request):
+    if request.is_ajax():
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        print 'reg', username, password
         try:
-            reguser = User.objects.get(name=uname)
+            reguser = User.objects.get(username=username)
         except User.DoesNotExist:
-            reguser = User(name=uname, pwd=upwd)
+            reguser = User(username=username, password=password)
             reguser.save()
-            req.session['username'] = uname
+            request.session['username'] = username
             return HttpResponse(0)
         return HttpResponse(1)
-    return render(req, 'index.html')
+    return render(request, 'index.html')
 
 
-def login(req):    
-    if req.is_ajax():
-        uname = req.POST.get('name',None)
-        upwd = req.POST.get('pwd',None)
-        if uname is None or upwd is None:
-            return render(req, 'index.html')
-        print uname, upwd
+def login(requset):
+    if requset.is_ajax():
+        username = requset.POST.get('username')
+        password = requset.POST.get('password')
+        if username is None or password is None:
+            return render(requset, 'index.html')
+        print username, password
         try:
-            user = User.objects.get(name=uname,pwd=upwd)
+            user = User.objects.get(username=username,password=password)
         except User.DoesNotExist:
-            return render(req, 'index.html')
-        req.session['username'] = uname
+            return render(requset, 'index.html')
+        requset.session['username'] = uname
         return HttpResponse(0)
     else:
-        return render(req, 'index.html', {'name': uname})
+        return render(requset, 'index.html', {'name': uname})
 
 
-def user_mood(req):
-    posts = Post.objects.all()
-    evalues = [p.tmood for p in posts]
-    username = req.session.get('username', 'Hackathon')
-    return render(req, 'home.html', locals())
+def user_mood(request):
+    posts = list(Post.objects.all())
+    # username = request.session.get('username', 'Hackathon')
+    username = 'hehe'
+    return render(request, 'home.html', locals())
 
 
 
-def post_mood(req):
-    if req.is_ajax():
-        text = req.POST.get('text','')
-        imgurl = req.POST.get('img', '')
-        imood = req.POST.get('emotion', 'normal')
+@require_POST
+def post_mood(request):
+    if request.is_ajax():
+        text = request.POST.get('text', None)
+        imgurl = request.POST.get('img', None)
+        imood = request.POST.get('emotion', 'normal')
         print text, len(imgurl)
-        try:
-            user = User.objects.get(name='a')
-        except:
-            user = User(name='a')
+        name = request.session.get('username')
+        user = User.objects.get(username=name)
+        
         tmood = SnowNLP(text).sentiments
-        post = Post(img=imgurl,text=text,tmood=tmood,imood=imood,poster=user)
+        post = Post(img=imgurl, text=text, tmood=tmood, imood=imood, poster=user)
         # print post.img,post.text,post.imood,post.poster
         post.save()
         # return HttpResponse(0)
         posts = list(Post.objects.all())
         print 'posts',len(posts)
-        return render(req, 'home.html', posts)
+        return render(request, 'home.html', posts)
     return HttpResponse(1)
 
 
 
 
-def axis(req):
-    posts = Post.objects.all()[0:8]
-    username = req.session.get('username', 'Hackathon')
+def axis(request):
+    posts = Post.objects.all()
+    username = request.session.get('username', 'Hackathon')
     evalues = [p.tmood for p in posts]
-    return render(req, 'axis.html', locals())
+    return render(request, 'axis.html', locals())
 
 
-def test(req):
-    if req.is_ajax():
-        text = req.POST.get('text', None)
+def test(request):
+    if request.is_ajax():
+        text = request.POST.get('text', None)
         print text
         return HttpResponse(text)
     else:
-        return render(req, 'mood.html')
+        return render(request, 'mood.html')

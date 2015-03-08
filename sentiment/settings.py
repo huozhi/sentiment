@@ -27,7 +27,7 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'template'),
+    os.path.join(BASE_DIR, 'templates'),
 )
 
 ALLOWED_HOSTS = []
@@ -42,7 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mood',
+    'apps.mood',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -110,6 +110,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+AUTH_USER_MODEL = 'mood.User'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/

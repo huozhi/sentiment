@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include "header.html" %}
+<link href="{{STATIC_URL}}css/vendors/jquery.fullPage.css" rel="stylesheet">
+</head>
+<body>
+
+
+
+
+<div id="fullpage">
+  <div class="section active">
+    <div class="jumbotron">
+      <div class="container">
+        <h1>心情轴</h1><p>留下你的脚印，回顾心路历程...</p>
+        {% include "post.html" %}
+        <a href="/axis/" class="btn btn-default">查看心情轴</a>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <img src="https://raw.githubusercontent.com/alvarotrigo/fullPage.js/master/examples/imgs/iphone3.png">
+  </div>
+  <div class="section">
+    <img src="https://raw.githubusercontent.com/alvarotrigo/fullPage.js/master/examples/imgs/iphone-red.png">
+  </div>
+  <div class="section">
+    <img src="https://raw.githubusercontent.com/alvarotrigo/fullPage.js/master/examples/imgs/iphone2.png">
+    <img src="https://raw.githubusercontent.com/alvarotrigo/fullPage.js/master/examples/imgs/iphone4.png">
+
+  </div>
+
+</div>
+
+<div class="container">
+  {% for post in posts %}
+  <div class="post col-lg-12">
+    <div class="post-img col-lg-8">
+      <img class="col-lg-12 col-md-8" src="{{ post.img }}" alt="">
+      <div class="post-text col-lg-4 col-md-4 text-center">
+        <h3>{{ post.text }}</h3>
+        <h4>你那天有点
+        {% ifequal post.imood 'happy' %}
+          <span class="label label-success">
+          开心
+        {% endifequal %}
+        {% ifequal post.imood 'sad' %}
+          <span class="label label-primary">
+          伤心
+        {% endifequal %}
+        {% ifequal post.imood 'angry' %}
+          <span class="label label-danger">
+          不爽
+        {% endifequal %}
+        {% ifequal post.imood 'surprise' %}
+          <span class="label label-warning">
+          惊讶
+        {% endifequal %}
+        </span>呀</h4>
+        <!-- <a href="#" class="btn btn-default btn-lg">Read More</a> -->
+      </div>
+      <br>
+    </div>
+  </div>
+  {% endfor %}
+
+
+  <!-- <div class="col-lg-12 text-center">
+    <ul class="pager">
+      <li class="previous"><a href="/logout">&larr; Older</a></li>
+      <li class="next"><a href="/axis">看看心情轴</a></li>
+    </ul>
+  </div> -->
+
+</div>
+
+{% include "footer.html" %}
+<script src="{{STATIC_URL}}js/vendors/utils.js"></script>
+<script src="{{STATIC_URL}}js/vendors/dat.gui.min.js"></script>
+<script src="{{STATIC_URL}}js/vendors/numeric-1.2.6.min.js"></script>
+<script src="{{STATIC_URL}}js/vendors/mosse.js"></script>
+<script src="{{STATIC_URL}}js/vendors/jsfeat-min.js"></script>
+<script src="{{STATIC_URL}}js/vendors/frontalface.js"></script>
+<script src="{{STATIC_URL}}js/vendors/jsfeat_detect.js"></script>
+<script src="{{STATIC_URL}}js/vendors/left_eye_filter.js"></script>
+<script src="{{STATIC_URL}}js/vendors/right_eye_filter.js"></script>
+<script src="{{STATIC_URL}}js/vendors/nose_filter.js"></script>
+<script src="{{STATIC_URL}}js/vendors/models/model_pca_20_svm.js"></script>
+<script src="{{STATIC_URL}}js/vendors/clm.js"></script>
+<script src="{{STATIC_URL}}js/vendors/svmfilter_webgl.js"></script>
+<script src="{{STATIC_URL}}js/vendors/svmfilter_fft.js"></script>
+<script src="{{STATIC_URL}}js/vendors/mossefilter.js"></script>
+
+<script src="{{STATIC_URL}}js/vendors/clmtrackr.js"></script>
+<script src="{{STATIC_URL}}js/vendors/models/model_pca_20_svm_emotionDetection.js"></script>
+<script src="{{STATIC_URL}}js/vendors/d3.min.js"></script>
+<script src="{{STATIC_URL}}js/vendors/emotion_classifier.js"></script>
+<script src="{{STATIC_URL}}js/vendors/emotionmodel.js"></script>
+
+<script src="{{STATIC_URL}}js/vendors/jquery.imgareaselect.pack.js"></script>
+<script src="{{STATIC_URL}}js/vendors/BlobBuilder.min.js"></script>
+<script src="{{STATIC_URL}}js/vendors/Filesaver.min.js"></script>
+
+<script src="{{STATIC_URL}}js/vendors/jquery.fullPage.min.js"></script>
+<script>
+$(document).ready(function() {
+  fullpageStart();
+
+  var imgUrl = '';
+  var ec = new emotionClassifier();
+  ec.init(emotionModel);
+  var emotionData = ec.getBlank();  
+  
+  $("#post-btn").click(function(){
+    var cp = ctrack.getCurrentParameters();
+    var er = ec.predict(cp);
+    var major = $('#angry').val();
+    var majorname = "angry";
+    $('#angry').val(er[0].value.toString());
+    $('#sad').val(er[1].value.toString());
+    $('#surprised').val(er[2].value.toString());
+    $('#happy').val(er[3].value.toString());
+    var majorindex=0;
+    for(var i = 1;i < 4; i++) {
+      if(er[i].value > er[majorindex].value)
+        majorindex = i;
+    }
+
+    for(var i = 0; i < 4; i++) {
+      if(i != majorindex)
+        $('#' + er[i].emotion).addClass('hide');
+    }
+
+    var postMood = {
+      img: imgUrl,
+      text: $('#text').val(),
+      emotion: er[majorindex].emotion
+    }
+    $.post('/post/', postMood, function(ret) {
+      // console.log(ret);
+      location.reload();
+    })
+  });
+
+  var cc = document.getElementById('image').getContext('2d'); 
+  $('#image').click(function(){
+    $('#img').click();
+  })
+
+  var ctrack = new clm.tracker({stopOnConvergence : true});
+  ctrack.init(pModel);
+  
+  var drawRequest;
+  
+  function animateClean() {
+    ctrack.start(document.getElementById('image'));
+    drawLoop();
+  }
+
+  function animate(box) {
+    ctrack.start(document.getElementById('image'), box);
+    drawLoop();
+  }
+  
+  function drawLoop() {
+    drawRequest = requestAnimFrame(drawLoop);
+    overlayCC.clearRect(0, 0, 720, 576);
+    if (ctrack.getCurrentPosition()) {
+      ctrack.draw(overlay);
+    }
+  }
+  
+  // detect if tracker fails to find a face
+  document.addEventListener("clmtrackrNotFound", function(event) {
+    ctrack.stop();
+    console.log("to late")
+  }, false);
+  
+  // detect if tracker loses tracking of face
+  // detect if tracker has converged
+  document.addEventListener("clmtrackrConverged", function(event) {
+    // stop drawloop
+    cancelRequestAnimFrame(drawRequest);
+  }, false);
+  
+  // update stats on iteration
+  // document.addEventListener("clmtrackrIteration", function(event) {
+  //   stats.update();
+  // }, false);
+
+  // manual selection of faces (with jquery imgareaselect plugin)
+  function selectBox() {
+    document.getElementById('convergence').innerHTML = "";
+    ctrack.reset();
+    $('#overlay').addClass('hide');
+    $('#image').imgAreaSelect({
+      handles : true,
+      onSelectEnd : function(img, selection) {
+        // create box
+        var box = [selection.x1, selection.y1, selection.width, selection.height];
+        
+        // do fitting
+        animate(box);
+      },
+      autoHide : true
+    });
+  }
+
+  // function to start showing images
+  function loadImage() {
+    if (fileList.indexOf(fileIndex) < 0) {
+      var reader = new FileReader();
+      reader.onload = (function(theFile) {
+        return function(e) {
+          // check if positions already exist in storage
+        
+          // Render thumbnail.
+          var canvas = document.getElementById('image')
+          var cc = canvas.getContext('2d');
+          var img = new Image();
+          img.onload = function() {
+            if (img.height > 500 || img.width > 550) {
+              var rel = parseFloat(img.height)/img.width;
+              var neww = 550 * rel;
+              var newh = 500 * rel;
+              if (img.height <= 500 && neww > 550) {
+                neww = 550;
+                // newh = newh * neww/rel;
+              }
+            }
+            // canvas.setAttribute('width', img.width);
+            // canvas.setAttribute('height', img.height);
+            console.log(parseFloat(550-img.width)/2,
+              parseFloat(500-img.height)/2,
+              img.width,
+              img.height)
+            cc.drawImage(img,0,
+              0,550, 500);
+          }
+           
+          // console.log(e.target.result)
+          imgUrl = e.target.result;
+          img.src = e.target.result;
+        };
+      })(fileList[fileIndex]);
+      reader.readAsDataURL(fileList[fileIndex]);
+      ctrack.reset();
+    }
+
+  }
+
+  // set up file selector and variables to hold selections
+  var fileList, fileIndex = 0;
+  if (window.File && window.FileReader && window.FileList) {
+    function handleFileSelect(evt) {
+      var files = evt.target.files;
+      fileList = [];
+      for (var i = 0;i < files.length;i++) {
+        if (!files[i].type.match('image.*')) {
+          continue;
+        }
+        fileList.push(files[i]);
+      }
+      if (files.length > 0) {
+        fileIndex = 0;
+      }
+      
+      loadImage();
+      ctrack.start(document.getElementById('image'));
+    }
+    document.getElementById('img').addEventListener('change', handleFileSelect, false);
+  } else {
+    // $('#img').addClass("hide");
+    $('#loadimagetext').addClass("hide");
+  }
+});
+
+function fullpageStart() {
+  $('#fullpage').fullpage({
+    //Navigation
+    menu: false,
+    anchors:['firstSlide', 'secondSlide'],
+    navigation: false,
+    navigationPosition: 'right',
+    navigationTooltips: ['firstSlide', 'secondSlide'],
+    slidesNavigation: true,
+    slidesNavPosition: 'bottom',
+
+    //Scrolling
+    css3: true,
+    scrollingSpeed: 700,
+    autoScrolling: true,
+    fitToSection: true,
+    scrollBar: false,
+    easing: 'easeInOutCubic',
+    easingcss3: 'ease',
+    loopBottom: false,
+    loopTop: false,
+    loopHorizontal: true,
+    continuousVertical: false,
+    normalScrollElements: null,
+    scrollOverflow: false,
+    touchSensitivity: 15,
+    normalScrollElementTouchThreshold: 5,
+
+    //Accessibility
+    keyboardScrolling: true,
+    animateAnchor: true,
+    recordHistory: true,
+
+    //Design
+    controlArrows: true,
+    verticalCentered: true,
+    resize : false,
+    sectionsColor : ['#ccc', '#fff'],
+    paddingTop: '3em',
+    paddingBottom: '10px',
+    fixedElements: 'body, body',
+    responsive: 0,
+
+    //Custom selectors
+    sectionSelector: '.section',
+    slideSelector: '.slide',
+
+    //events
+    onLeave: function(index, nextIndex, direction){},
+    afterLoad: function(anchorLink, index){},
+    afterRender: function(){},
+    afterResize: function(){},
+    afterSlideLoad: function(anchorLink, index, slideAnchor, slideIndex){},
+    onSlideLeave: function(anchorLink, index, slideIndex, direction){}
+  });
+}
+
+</script>
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <p>Copyright &copy; Your Website 2014</p>
+      </div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
