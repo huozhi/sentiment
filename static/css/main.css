@@ -2,6 +2,12 @@
 font-family: "Open Sans", "HelveticaNeue-Light Light", Arial, Helvetica, "Lucida Grande", "Microsoft Yahei";
 }
 
+.btn-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
 .post {
   position: relative;
   margin-bottom: 40px;

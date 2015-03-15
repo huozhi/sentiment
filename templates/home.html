@@ -106,7 +106,22 @@ img {
     <div class="container-fluid jumbotron header-text">
       <h1>心情轴</h1><p>留下你的脚印，回顾心路历程，看看自己走过的路...</p>
       {% include "post.html" %}
-      <a href="/axis/" class="btn btn-default">查看心情轴</a>
+      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#moodModal">
+       心情
+      </button>
+      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#photoModal">
+       照片
+      </button>
+      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#bookModal">
+       书摘
+      </button>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#musicModal">
+       歌词
+      </button>
+      <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#musicModal">
+       电影
+      </button>
+      <button onclick="location.href='/axis/'" class="btn btn-default">心路轴</button>
     </div>
   </div>
  
@@ -209,7 +224,9 @@ img {
 <script src="{{STATIC_URL}}js/application.js"></script>
 
 <script type="text/javascript">
-$(function() {
++$(document).ready(function() {
+  App.clickPost();
+  App.fullPage('#fullpage');
 });
 </script>
 </body>

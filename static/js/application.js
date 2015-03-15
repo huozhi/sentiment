@@ -1,7 +1,4 @@
-+$(document).ready(function() {
-  App.clickPost();
-  App.fullPage('#fullpage');
-});
+
 
 
 function App() {
