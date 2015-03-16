@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_POST
 from django.contrib.auth.decorators import login_required
+from django.views.generic import View
 
 from apps.mood.models import *
 from snownlp import SnowNLP
@@ -58,33 +59,35 @@ def login(requset):
         return render(requset, 'index.html', {'name': uname})
 
 
-def user_mood(request):
-    posts = list(Post.objects.all())
-    # username = request.session.get('username', 'Hackathon')
-    username = 'hehe'
-    return render(request, 'home.html', locals())
-
-
-
-@require_POST
-def post_mood(request):
-    if request.is_ajax():
+class MoodView(View):
+    def get(self, request):
+        return render(request, 'home.html', locals())
+    
+    def post(self, request):
+        image = request.POST.get('image', None)
+        tag = request.POST.get('tag', None)
         text = request.POST.get('text', None)
-        imgurl = request.POST.get('img', None)
-        imood = request.POST.get('emotion', 'normal')
-        print text, len(imgurl)
-        name = request.session.get('username')
-        user = User.objects.get(username=name)
+        print text
+        print tag
+        print image
+        return HttpResponse(1)
+
+# @require_POST
+# def post_mood(request):
+#     if request.is_ajax():
         
-        tmood = SnowNLP(text).sentiments
-        post = Post(img=imgurl, text=text, tmood=tmood, imood=imood, poster=user)
-        # print post.img,post.text,post.imood,post.poster
-        post.save()
-        # return HttpResponse(0)
-        posts = list(Post.objects.all())
-        print 'posts',len(posts)
-        return render(request, 'home.html', posts)
-    return HttpResponse(1)
+#         # name = request.session.get('username')
+#         # user = User.objects.get(username=name)
+        
+#         # tmood = SnowNLP(text).sentiments
+#         # post = Post(img=imgurl, text=text, tmood=tmood, imood=imood, poster=user)
+#         # print post.img,post.text,post.imood,post.poster
+#         # post.save()
+#         # return HttpResponse(0)
+#         # posts = list(Post.objects.all())
+        
+#         # return render(request, 'home.html', posts)
+#     return HttpResponse(1)
 
 
 

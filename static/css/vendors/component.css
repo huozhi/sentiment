@@ -24,8 +24,8 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 10px;
-    background-color: rgba(108, 191, 238, 0.2);
+    width: 5px;
+    background-color: rgba(158, 152, 148, 0.65);
     left: 20%;
     margin-left: -10px;
 }
@@ -117,48 +117,22 @@
 .cbp_tmtimeline > li .cbp_tmicon {
     width: 50px;
     height: 50px;
-
-    font-family: 'FontAwesome';
     speak: none;
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
     text-transform: none;
-    font-size: 1.4em;
+    font-size: 1.5em;
     line-height: 40px;
     -webkit-font-smoothing: antialiased;
     position: absolute;
-    /*color: #fff;*/
-    /*background: #6cbfee;*/
     background-color: white;
     border-radius: 50%;
-    box-shadow: 0 0 0 8px #3594cb;
     text-align: center;
     left: 20%;
     top: 0;
     margin: 0 0 0 -30px;
 }
-
-.cbp_tmicon > i, .cbp_tmicon > span  {
-    position: relative;
-    top: 3px;
-}
-
-/*.cbp_tmicon-phone:before {
-    content: "\e000";
-}
-
-.cbp_tmicon-screen:before {
-    content: "\e001";
-}
-
-.cbp_tmicon-mail:before {
-    content: "\e002";
-}
-
-.cbp_tmicon-earth:before {
-    content: "\e003";
-}*/
 
 /* Example Media Queries */
 @media screen and (max-width: 65.375em) {

@@ -1,9 +1,4 @@
-
-
-
-function App() {
-
-};
+function App() { };
 
 
 App.fullPage = function (selector) {
@@ -44,8 +39,8 @@ App.fullPage = function (selector) {
     verticalCentered: false,
     resize : true,
     sectionsColor : ['#fff'],
-    paddingTop: '0px',
-    paddingBottom: '0px',
+    paddingTop: '20px',
+    paddingBottom: '20px',
     // fixedElements: 'body, body',
     responsive: 0,
 
@@ -105,8 +100,6 @@ App.emotionDection = function () {
   ec.init(emotionModel);
   var emotionData = ec.getBlank();  
   
-
-
   var cc = document.getElementById('image').getContext('2d'); 
   $('#image').click(function(){
     $('#img').click();
@@ -238,4 +231,66 @@ App.emotionDection = function () {
     // $('#img').addClass("hide");
     $('#loadimagetext').addClass("hide");
   }
+}
+
+App.addImageListener = function () {
+  $('#img-real').change(function() {
+    var $self = $(this);
+    var file = $self.get(0).files[0];
+    var reader = new FileReader();  
+    reader.onload = function(e){  
+      render(e.target.result);  
+    };  
+    reader.readAsDataURL(file); 
+  });
+
+};
+
+App.setTagListener = function () {
+  $('.mood-type').click(function() {
+    var $self = $(this);//, $siblings = $self.siblings();
+    $('.mood-type').removeClass('btn-success').addClass('btn-default');
+    $self.removeClass('btn-default').addClass('btn-success');
+  });
+};
+
+
+App.postListener = function () {
+  $('#postBtn').click(function () {
+    var file = $('#img-real').get(0).files[0];
+    var tag = $('.mood-type.btn-success').text();
+    var text = $('textarea').val();
+    var formData = new FormData()
+    formData.append('image', file, file.name);
+    formData.append('tag', tag);
+    formData.append('text', text);
+    $.ajax({
+      url: '/mood/',
+      type: 'POST',
+      data: formData,
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: function(ret) {if(ret)console.log(ret)}
+    });
+  });
+};
+
+
+function render(src) {
+  MAX_HEIGHT = 568;
+  var image = new Image();  
+  image.onload = function(){  
+    var $canvas = $('canvas'); 
+    if(image.height > MAX_HEIGHT) {  
+        image.width *= MAX_HEIGHT / image.height;  
+        image.height = MAX_HEIGHT;  
+    }  
+    var ctx = $canvas.get(0).getContext('2d');  
+    ctx.clearRect(0, 0, $canvas.width(), $canvas.height());  
+    $canvas.attr('width', image.width);
+    $canvas.attr('height', image.height);
+    ctx.drawImage(image, 0, 0, image.width, image.height);  
+  };  
+  image.src = src;  
 }

@@ -7,7 +7,39 @@
 
 .section {
   max-width: 800px;
+  /*width: 100%;*/
+  display: table;
   margin: auto;
+}
+
+
+@media (min-width: 768px) {
+  .line:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background-color: rgba(158, 152, 148, 0.65);
+    left: 50%;
+    margin-left: -5px;
+  }
+
+  .modal-md {
+    width: 450px;
+  }  
+}
+
+.text-wrap {
+  padding-left: 40px;
+}
+.wrap {
+  vertical-align: middle;
+  display: table-cell;
+}
+img {
+  max-width: 360px;
+  display: inline-block;
 }
 
 .pager {
@@ -29,7 +61,7 @@
 
 .section:first-child {
   margin: auto;
-  max-width: 100%;
+  max-width: 1120px;
   position: relative;
   display: table;
   background-image: url(/static/img/bg.jpg);
@@ -37,13 +69,12 @@
   background-attachment:fixed;
   background-position:center;
   background-size: cover;
-  height: 100%;
+  /*height: 50%;*/
   width: 100%;
 }
 
 .jumbotron {
   background-color: transparent;
-
 }
 
 .jumbotron > h1,
@@ -56,81 +87,31 @@
   color: white;
   margin: 50px;
 }
-.header-text {
-  display: table-cell;
-  vertical-align: middle;
-}
 
-img {
-  position: relative;
-  max-width: 360px;
-  width: 80%;
-  margin: 20px;
-}
-
-
-.section > .text-wrap {
-  float: left;
-}
-.section > .img-wrap {
-  float: right;
-}
-.section:nth-child(2n) > .text-wrap {
-  float: right;
-}
-.section:nth-child(2n) > .img-wrap {
-  float: left;
-}
-
-
-.wrap {
-  display: table;
-  height: 100%;
-}
-
-.text-wrap {
-  position: relative;
-  vertical-align: middle;
-  display: table-cell;
-  margin: auto;
-  text-align: center;
-}
 
 </style>
 </head>
 
 
 <body>
+<div class="line"></div>
 <div id="fullpage">
   <div class="section active text-center">
     <div class="container-fluid jumbotron header-text">
       <h1>心情轴</h1><p>留下你的脚印，回顾心路历程，看看自己走过的路...</p>
       {% include "post.html" %}
       <button type="button" class="btn btn-success" data-toggle="modal" data-target="#moodModal">
-       心情
+       留下脚印
       </button>
-      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#photoModal">
-       照片
-      </button>
-      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#bookModal">
-       书摘
-      </button>
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#musicModal">
-       歌词
-      </button>
-      <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#musicModal">
-       电影
-      </button>
+      
       <button onclick="location.href='/axis/'" class="btn btn-default">心路轴</button>
     </div>
   </div>
  
   <div class="section">
-    <div class="col-lg-6 col-md-6 col-sm-6 img-wrap">
-      <img class="" src="https://raw.githubusercontent.com/alvarotrigo/fullPage.js/master/examples/imgs/iphone3.png">
-    </div>
-    <div class="col-lg-6 col-md-6 col-sm-6 wrap">
-      <div class="text-wrap">
+    <div class="wrap">
+      <img class="img-responsive col-lg-6 col-md-6 col-sm-6" src="/static/img/xinqing.jpg">
+      <div class="col-lg-6 col-md-6 col-sm-6 text-wrap">
         <h2>呵呵呵呵</h2>
         <h3><small>这是条消息</small></h3>
         <p>真的，没逗你</p>        
@@ -138,11 +119,9 @@ img {
     </div>
   </div>
   <div class="section">
-    <div class="col-lg-6 col-md-6 col-sm-6 img-wrap">
-      <img class="" src="https://raw.githubusercontent.com/alvarotrigo/fullPage.js/master/examples/imgs/iphone-red.png">
-    </div>
-    <div class="col-lg-6 col-md-6 col-sm-6 wrap">
-      <div class="text-wrap">
+    <div class="wrap">
+      <img class="img-responsive col-lg-6 col-md-6 col-sm-6" src="/static/img/film.jpg">
+      <div class="col-lg-6 col-md-6 text-wrap">
         <h2>呵呵呵呵</h2>
         <h3><small>这是条消息</small></h3>
         <p>真的，没逗你</p>        
@@ -150,16 +129,15 @@ img {
     </div>
   </div>
   <div class="section">
-    <div class="col-lg-6 col-md-6 col-sm-6 img-wrap">
-      <img class="" src="https://raw.githubusercontent.com/alvarotrigo/fullPage.js/master/examples/imgs/iphone2.png">
-    </div>
-    <div class="col-lg-6 col-md-6 col-sm-6 wrap">
-      <div class="text-wrap">
+    <div class="wrap">
+      <img class="img-responsive col-lg-6 col-md-6 col-sm-6" src="/static/img/book.jpg">
+        
+      <div class="col-lg-6 col-md-6 col-sm-6 text-wrap">
         <h2>呵呵呵呵</h2>
         <h3><small>这是条消息</small></h3>
         <p>真的，没逗你</p>        
       </div>
-    </div>
+    </div>  
   </div>
 </div>
 
@@ -204,19 +182,9 @@ img {
   </div>
   {% endfor %}
 
-
-
-
 </div>
 
 
-<footer class="container-fluid">
-
-  <div class="text-center">
-    <p>Copyright &copy; Jiachi Liu, Xuebing Zhao Website 2014</p>    
-  </div>
-
-</footer>
 
 {% include "footer.html" %}
 {% include "detect.html" %}
@@ -227,7 +195,18 @@ img {
 +$(document).ready(function() {
   App.clickPost();
   App.fullPage('#fullpage');
+
+  App.addImageListener();
+  App.setTagListener();
+  App.postListener();
 });
+
 </script>
+<footer class="container-fluid">
+  <div class="text-center">
+    <p>Copyright &copy; Jiachi Liu, Xuebing Zhao Website 2014</p>    
+  </div>
+</footer>
+
 </body>
 </html>
