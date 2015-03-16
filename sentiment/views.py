@@ -64,7 +64,11 @@ class MoodView(View):
         return render(request, 'home.html', locals())
     
     def post(self, request):
-        image = request.POST.get('image', None)
+        image = request.FILES.get('image', None)
+        with open('media/%s' % image.name, 'wb+') as dest:
+            for chunk in image.chunks():
+                dest.write(chunk)
+
         tag = request.POST.get('tag', None)
         text = request.POST.get('text', None)
         print text
