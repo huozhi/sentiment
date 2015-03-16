@@ -20,7 +20,6 @@ sys.setdefaultencoding('utf8')
 
 
 @require_GET
-# @login_required(redirect_field_name='/axis/')
 def home(request):
     username = request.session.get('username', 'hehe')
     return render(request, 'home.html', { 'username': username })
